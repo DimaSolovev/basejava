@@ -7,13 +7,14 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
+public class ArrayStorage extends AbstractArrayStorage {
 
-    private Resume[] storage = new Resume[10_000];
-    private int size;
+//    private static final int STORAGE_LIMIT = 10_000;
+//    private Resume[] storage = new Resume[STORAGE_LIMIT];
+//    private int size;
 
     public void update(Resume resume) {
-        int index = getIndex (resume.getUuid());
+        int index = getIndex(resume.getUuid());
         if (index == -1) {
             System.out.println("ERROR, storage doesn't contain resume " + resume.getUuid());
         } else {
@@ -26,7 +27,7 @@ public class ArrayStorage {
             System.out.println("ERROR, storage is full");
             return;
         }
-        if (getIndex (resume.getUuid()) != -1) {
+        if (getIndex(resume.getUuid()) != -1) {
             System.out.println("ERROR, storage already contains resume " + resume.getUuid());
             return;
         }
@@ -34,17 +35,10 @@ public class ArrayStorage {
         size++;
     }
 
-    public Resume get(String uuid) {
-        int index = getIndex (uuid);
-        if (index == -1) {
-            System.out.println("ERROR, storage doesn't contain resume " + uuid);
-            return null;
-        }
-        return storage[index];
-    }
+
 
     public void delete(String uuid) {
-        int index = getIndex (uuid);
+        int index = getIndex(uuid);
         if (index == -1) {
             System.out.println("ERROR, storage doesn't contain resume  " + uuid);
             return;
@@ -54,7 +48,7 @@ public class ArrayStorage {
         size--;
     }
 
-    private int getIndex (String uuid) {
+    protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
@@ -64,7 +58,7 @@ public class ArrayStorage {
     }
 
     public void clear() {
-        Arrays.fill(storage,0,size, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
@@ -75,9 +69,5 @@ public class ArrayStorage {
         Resume[] resumes = new Resume[size];
         if (size >= 0) System.arraycopy(storage, 0, resumes, 0, size);
         return resumes;
-    }
-
-    public int size() {
-        return size;
     }
 }
