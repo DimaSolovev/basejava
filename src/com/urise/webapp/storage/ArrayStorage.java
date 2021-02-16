@@ -9,25 +9,57 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
 
-    private Resume[] storage = new Resume[10000];
-    private int size = 0;
+    private Resume[] storage = new Resume[10_000];
+    private int size;
 
-    public boolean checkResume(Resume e) {
+    public Resume check(Resume r) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].equals(e)) {
-                return true;
+            if (storage[i].getUuid().equals(r.getUuid())) {
+                return r;
             }
         }
-        return false;
+        return null;
     }
 
-    public boolean checkUuid(String uuid) {
+    public void update(Resume r) {
+        if (check(r) != null) {
+            System.out.println("ERROR " + r.getUuid());
+        }
+    }
+
+    public void save(Resume r) {
+        if (size == storage.length || check(r) != null) {
+            System.out.println("ERROR " + r.getUuid());
+            return;
+        }
+        storage[size] = r;
+        size++;
+    }
+
+    public Resume get(String uuid) {
+        Resume resume = new Resume();
+        resume.setUuid(uuid);
+        if (check(resume) == null) {
+            System.out.println("ERROR " + uuid);
+            return null;
+        }
+        return resume;
+    }
+
+    public void delete(String uuid) {
+        Resume resume = new Resume();
+        resume.setUuid(uuid);
+        if (check(resume) == null) {
+            System.out.println("ERROR " + uuid);
+            return;
+        }
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
-                return true;
+                storage[i] = storage[size - 1];
+                storage[size - 1] = null;
+                size--;
             }
         }
-        return false;
     }
 
     public void clear() {
@@ -35,64 +67,13 @@ public class ArrayStorage {
         size = 0;
     }
 
-    public void update(Resume r) {
-        if (checkResume(r)) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].equals(r)) {
-                    storage[i] = r;
-                }
-            }
-        } else {
-            System.out.println("ERROR");
-        }
-    }
-
-    public void save(Resume r) {
-        if (storage.length > 10000) {
-            System.out.println("ERROR");
-            return;
-        }
-        if (!checkResume(r)) {
-            storage[size] = r;
-            size++;
-        } else {
-            System.out.println("ERROR");
-        }
-    }
-
-    public Resume get(String uuid) {
-        if (checkUuid(uuid)) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid))
-                    return storage[i];
-            }
-        } else {
-            System.out.println("ERROR");
-        }
-        return null;
-    }
-
-    public void delete(String uuid) {
-        if (checkUuid(uuid)) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    storage[i] = storage[size - 1];
-                    storage[size - 1] = null;
-                    size--;
-                }
-            }
-        } else {
-            System.out.println("ERROR");
-        }
-    }
-
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        Resume[] storageAll = new Resume[size];
-        if (size >= 0) System.arraycopy(storage, 0, storageAll, 0, size);
-        return storageAll;
+        Resume[] resumes = new Resume[size];
+        if (size >= 0) System.arraycopy(storage, 0, resumes, 0, size);
+        return resumes;
     }
 
     public int size() {
