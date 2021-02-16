@@ -12,24 +12,31 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[10_000];
     private int size;
 
-    public Resume check(Resume r) {
+    public int check(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(r.getUuid())) {
-                return r;
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
             }
         }
-        return null;
+        return -1;
     }
 
     public void update(Resume r) {
-        if (check(r) != null) {
-            System.out.println("ERROR " + r.getUuid());
+        int num = check(r.getUuid());
+        if (num == -1) {
+            System.out.println("ERROR, storage doesn't contain resume " + r.getUuid());
+        } else {
+            this.storage[num] = r;
         }
     }
 
     public void save(Resume r) {
-        if (size == storage.length || check(r) != null) {
-            System.out.println("ERROR " + r.getUuid());
+        if (size == storage.length) {
+            System.out.println("ERROR, storage is full");
+            return;
+        }
+        if (check(r.getUuid()) != -1) {
+            System.out.println("ERROR, storage already contains resume " + r.getUuid());
             return;
         }
         storage[size] = r;
@@ -37,29 +44,23 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        Resume resume = new Resume();
-        resume.setUuid(uuid);
-        if (check(resume) == null) {
-            System.out.println("ERROR " + uuid);
+        int num = check(uuid);
+        if (num == -1) {
+            System.out.println("ERROR, storage doesn't contain resume " + uuid);
             return null;
         }
-        return resume;
+        return storage[num];
     }
 
     public void delete(String uuid) {
-        Resume resume = new Resume();
-        resume.setUuid(uuid);
-        if (check(resume) == null) {
-            System.out.println("ERROR " + uuid);
+        int num = check(uuid);
+        if (num == -1) {
+            System.out.println("ERROR, storage doesn't contain resume  " + uuid);
             return;
         }
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                storage[i] = storage[size - 1];
-                storage[size - 1] = null;
-                size--;
-            }
-        }
+        storage[num] = storage[size - 1];
+        storage[size - 1] = null;
+        size--;
     }
 
     public void clear() {
