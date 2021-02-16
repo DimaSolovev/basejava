@@ -12,7 +12,49 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[10_000];
     private int size;
 
-    public int check(String uuid) {
+    public void update(Resume resume) {
+        int index = getIndex (resume.getUuid());
+        if (index == -1) {
+            System.out.println("ERROR, storage doesn't contain resume " + resume.getUuid());
+        } else {
+            storage[index] = resume;
+        }
+    }
+
+    public void save(Resume resume) {
+        if (size == storage.length) {
+            System.out.println("ERROR, storage is full");
+            return;
+        }
+        if (getIndex (resume.getUuid()) != -1) {
+            System.out.println("ERROR, storage already contains resume " + resume.getUuid());
+            return;
+        }
+        storage[size] = resume;
+        size++;
+    }
+
+    public Resume get(String uuid) {
+        int index = getIndex (uuid);
+        if (index == -1) {
+            System.out.println("ERROR, storage doesn't contain resume " + uuid);
+            return null;
+        }
+        return storage[index];
+    }
+
+    public void delete(String uuid) {
+        int index = getIndex (uuid);
+        if (index == -1) {
+            System.out.println("ERROR, storage doesn't contain resume  " + uuid);
+            return;
+        }
+        storage[index] = storage[size - 1];
+        storage[size - 1] = null;
+        size--;
+    }
+
+    private int getIndex (String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
@@ -21,50 +63,8 @@ public class ArrayStorage {
         return -1;
     }
 
-    public void update(Resume r) {
-        int num = check(r.getUuid());
-        if (num == -1) {
-            System.out.println("ERROR, storage doesn't contain resume " + r.getUuid());
-        } else {
-            this.storage[num] = r;
-        }
-    }
-
-    public void save(Resume r) {
-        if (size == storage.length) {
-            System.out.println("ERROR, storage is full");
-            return;
-        }
-        if (check(r.getUuid()) != -1) {
-            System.out.println("ERROR, storage already contains resume " + r.getUuid());
-            return;
-        }
-        storage[size] = r;
-        size++;
-    }
-
-    public Resume get(String uuid) {
-        int num = check(uuid);
-        if (num == -1) {
-            System.out.println("ERROR, storage doesn't contain resume " + uuid);
-            return null;
-        }
-        return storage[num];
-    }
-
-    public void delete(String uuid) {
-        int num = check(uuid);
-        if (num == -1) {
-            System.out.println("ERROR, storage doesn't contain resume  " + uuid);
-            return;
-        }
-        storage[num] = storage[size - 1];
-        storage[size - 1] = null;
-        size--;
-    }
-
     public void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage,0,size, null);
         size = 0;
     }
 
