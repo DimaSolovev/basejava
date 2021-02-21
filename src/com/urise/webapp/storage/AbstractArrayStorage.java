@@ -33,18 +33,12 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-//    public void save(Resume resume) {
-//        if (size == storage.length) {
-//            System.out.println("ERROR, storage is full");
-//            return;
-//        }
-//        if (getIndex(resume.getUuid()) != -1) {
-//            System.out.println("ERROR, storage already contains resume " + resume.getUuid());
-//            return;
-//        }
-//        storage[size] = resume;
-//        size++;
-//    }
+    public void save(Resume resume) {
+        if (size == storage.length) {
+            System.out.println("ERROR, storage is full");
+            return;
+        }
+    }
 
     @Override
     public void delete(String uuid) {

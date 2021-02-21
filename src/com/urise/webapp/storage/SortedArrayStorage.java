@@ -14,15 +14,14 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (size == storage.length) {
-            System.out.println("ERROR, storage is full");
-            return;
-        }
-        if (getIndex(resume.getUuid()) > 0) {
+        super.save(resume);
+        int index = getIndex(resume.getUuid());
+        if (index > 0) {
             System.out.println("ERROR, storage already contains resume " + resume.getUuid());
-            return;
+        } else {
+            index = -(index+ 1);
+            storage[index] = resume;
+            size++;
         }
-        storage[size+1] = resume;
-        size++;
     }
 }
