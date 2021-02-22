@@ -38,17 +38,18 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("ERROR, storage is full");
             return;
         }
+        else if (getIndex(resume.getUuid()) >= 0) {
+            System.out.println("ERROR, storage already contains resume " + resume.getUuid());
+            return;
+        }
+
     }
 
     @Override
     public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
+        if (getIndex(uuid) < 0) {
             System.out.println("ERROR, storage doesn't contain resume  " + uuid);
-        } else {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
+            return;
         }
     }
 

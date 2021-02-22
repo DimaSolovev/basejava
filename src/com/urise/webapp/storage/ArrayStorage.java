@@ -17,11 +17,6 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     public void save(Resume resume) {
-        super.save(resume);
-        if (getIndex(resume.getUuid()) != -1) {
-            System.out.println("ERROR, storage already contains resume " + resume.getUuid());
-            return;
-        }
         storage[size] = resume;
         size++;
     }
@@ -29,10 +24,6 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index == -1) {
-            System.out.println("ERROR, storage doesn't contain resume  " + uuid);
-            return;
-        }
         storage[index] = storage[size - 1];
         storage[size - 1] = null;
         size--;

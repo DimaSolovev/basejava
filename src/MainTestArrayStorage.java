@@ -9,6 +9,7 @@ public class MainTestArrayStorage {
     private static final Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
+
         Resume r1 = new Resume();
         r1.setUuid("uuid1");
         Resume r2 = new Resume();
