@@ -41,11 +41,14 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("ERROR, storage already contains resume " + resume.getUuid());
             return;
         }
-        saveStorage(resume);
+        int index = -(getIndex(resume.getUuid()) + 1);
+        saveStorage(resume, index);
         size++;
     }
 
-    public abstract void saveStorage(Resume resume);
+    public abstract void saveStorage(Resume resume, int index);
+
+    public abstract void deleteStorage(String uuid, int index);
 
     @Override
     public void delete(String uuid) {
@@ -53,11 +56,10 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("ERROR, storage doesn't contain resume  " + uuid);
             return;
         }
-        deleteStorage(uuid);
+        int index = getIndex(uuid);
+        deleteStorage(uuid, index);
         size--;
     }
-
-    public abstract void deleteStorage(String uuid);
 
     @Override
     public void clear() {

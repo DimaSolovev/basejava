@@ -13,15 +13,15 @@ public class ArrayStorage extends AbstractArrayStorage {
                 return i;
             }
         }
-        return -1 ;
+        return -1;
     }
 
-    public void saveStorage(Resume resume) {
+    public void saveStorage(Resume resume, int index) {
         storage[size] = resume;
     }
 
-    public void deleteStorage(String uuid) {
-        storage[getIndex(uuid)] = storage[size - 1];
+    public void deleteStorage(String uuid, int index) {
+        storage[index] = storage[size - 1];
         storage[size - 1] = null;
     }
 }
