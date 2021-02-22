@@ -13,7 +13,7 @@ public class ArrayStorage extends AbstractArrayStorage {
                 return i;
             }
         }
-        return -1;
+        return -1 ;
     }
 
     public void saveStorage(Resume resume) {
