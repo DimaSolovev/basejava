@@ -51,7 +51,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public abstract void deleteStorage(String uuid, int index);
 
     @Override
-    public void delete(String uuid) {
+    public void delete(String uuid ) {
         if (getIndex(uuid) < 0) {
             System.out.println("ERROR, storage doesn't contain resume  " + uuid);
             return;
