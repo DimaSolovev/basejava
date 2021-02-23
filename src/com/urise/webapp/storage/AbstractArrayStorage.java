@@ -34,14 +34,14 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void save(Resume resume) {
+        int index = getIndex(resume.getUuid());
         if (size == storage.length) {
             System.out.println("ERROR, storage is full");
             return;
-        } else if (getIndex(resume.getUuid()) >= 0) {
+        } else if (index >= 0) {
             System.out.println("ERROR, storage already contains resume " + resume.getUuid());
             return;
         }
-        int index = -(getIndex(resume.getUuid()) + 1);
         saveStorage(resume, index);
         size++;
     }
@@ -51,13 +51,14 @@ public abstract class AbstractArrayStorage implements Storage {
     public abstract void deleteStorage(String uuid, int index);
 
     @Override
-    public void delete(String uuid ) {
-        if (getIndex(uuid) < 0) {
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index < 0) {
             System.out.println("ERROR, storage doesn't contain resume  " + uuid);
             return;
         }
-        int index = getIndex(uuid);
         deleteStorage(uuid, index);
+        storage[size - 1] = null;
         size--;
     }
 

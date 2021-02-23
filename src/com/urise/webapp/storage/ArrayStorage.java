@@ -22,6 +22,5 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     public void deleteStorage(String uuid, int index) {
         storage[index] = storage[size - 1];
-        storage[size - 1] = null;
     }
 }
