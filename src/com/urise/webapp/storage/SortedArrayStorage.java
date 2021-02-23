@@ -20,6 +20,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     public void deleteStorage(String uuid, int index) {
-        System.arraycopy(storage, index + 1, storage, index, size - index);
+        System.arraycopy(storage, index + 1, storage, index, size - index-1);
     }
 }
