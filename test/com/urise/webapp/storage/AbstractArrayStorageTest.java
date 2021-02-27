@@ -8,18 +8,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AbstractArrayStorageTest {
+public abstract class AbstractArrayStorageTest {
 
-    private Storage storage = new ArrayStorage();
+    private Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
 
     public AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
-    }
-
-    public AbstractArrayStorageTest() {
     }
 
     @Before
@@ -40,11 +37,21 @@ public class AbstractArrayStorageTest {
         Assert.assertEquals(new Resume(UUID_1), storage.get("uuid1"));
     }
 
+    @Test(expected = NotExistStorageException.class)
+    public void getNotExist() throws Exception {
+        storage.get("dummy");
+    }
+
     @Test
     public void update() {
         Resume test = storage.get("uuid1");
         storage.update(storage.get("uuid1"));
         Assert.assertEquals(test, storage.get("uuid1"));
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void updateNotExc() {
+        storage.update(new Resume("test"));
     }
 
     @Test
@@ -54,10 +61,33 @@ public class AbstractArrayStorageTest {
         Assert.assertEquals(resume, storage.get("uuid4"));
     }
 
+    @Test(expected = ExistStorageException.class)
+    public void saveExistExc() throws Exception {
+        storage.save(new Resume("uuid1"));
+    }
+
+    @Test(expected = StorageException.class)
+    public void saveStorageExc() throws Exception {
+        for (int i = 0; i < 9998; i++) {
+            storage.save(new Resume("uuidd" + i));
+        }
+        try {
+            storage.save(new Resume("test"));
+            Assert.fail("storage is overflowed to early");
+        } catch (Exception e) {
+            Assert.assertNotEquals("", e.getMessage());
+        }
+    }
+
     @Test
     public void delete() {
         storage.delete("uuid3");
         Assert.assertEquals(2, storage.size());
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void deleteNotExc() {
+        storage.delete("test");
     }
 
     @Test
@@ -73,26 +103,5 @@ public class AbstractArrayStorageTest {
         Assert.assertArrayEquals(test, test2);
     }
 
-    @Test(expected = NotExistStorageException.class)
-    public void getNotExist() throws Exception {
-        storage.get("dummy");
-    }
 
-    @Test(expected = StorageException.class)
-    public void getStorageExc() throws Exception {
-        for (int i = 0; i < 9998; i++) {
-            storage.save(new Resume("uuidd" + i));
-        }
-        try {
-            storage.save(new Resume("test"));
-            Assert.fail("storage is overflowed to early");
-        } catch (Exception e) {
-            Assert.assertNotEquals("", e.getMessage());
-        }
-    }
-
-    @Test(expected = ExistStorageException.class)
-    public void getExistExc()throws Exception{
-        storage.save(new Resume("uuid1"));
-    }
 }
