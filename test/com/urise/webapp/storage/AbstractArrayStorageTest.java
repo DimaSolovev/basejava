@@ -70,7 +70,7 @@ public abstract class AbstractArrayStorageTest {
     public void saveStorageOverflow() throws Exception {
         try {
             for (int i = 0; i < 9998; i++) {
-                storage.save(new Resume("uuidd" + i));
+                storage.save(new Resume(UUID_1 + i));
             }
         } catch (Exception e) {
             //Assert.assertNotEquals("", e.getMessage());
