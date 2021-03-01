@@ -69,11 +69,10 @@ public abstract class AbstractArrayStorageTest {
     @Test(expected = StorageException.class)
     public void saveStorageOverflow() throws Exception {
         try {
-            for (int i = 0; i < 9998; i++) {
+            for (int i = 0; i < 9997; i++) {
                 storage.save(new Resume(UUID_1 + i));
             }
         } catch (Exception e) {
-            //Assert.assertNotEquals("", e.getMessage());
             Assert.fail("storage is overflowed to early");
         }
         storage.save(new Resume("test"));
