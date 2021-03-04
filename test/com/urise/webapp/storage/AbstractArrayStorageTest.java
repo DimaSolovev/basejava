@@ -14,7 +14,7 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
-    private static final String TEST = "test";
+    private static final String UUID_4 = "uuid4";
 
     public AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
@@ -40,7 +40,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() throws Exception {
-        storage.get(TEST);
+        storage.get(UUID_4);
     }
 
     @Test
@@ -51,14 +51,14 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
-        storage.update(new Resume(TEST));
+        storage.update(new Resume(UUID_4));
     }
 
     @Test
     public void save() {
-        Resume resume = new Resume(TEST);
+        Resume resume = new Resume(UUID_4);
         storage.save(resume);
-        Assert.assertEquals(resume, storage.get(TEST));
+        Assert.assertEquals(resume, storage.get(UUID_4));
         Assert.assertEquals(4, storage.size());
     }
 
@@ -76,20 +76,23 @@ public abstract class AbstractArrayStorageTest {
         } catch (Exception e) {
             Assert.fail("storage is overflowed to early");
         }
-        storage.save(new Resume(TEST));
+        storage.save(new Resume(UUID_4));
     }
 
     @Test
     public void delete() {
         storage.delete(UUID_3);
         Assert.assertEquals(2, storage.size());
-        storage.save(new Resume(UUID_3));
-        Assert.assertEquals(new Resume(UUID_3), storage.get(UUID_3));
+        try {
+            storage.get(UUID_3);
+        } catch (NotExistStorageException e) {
+
+        }
     }
 
     @Test(expected = NotExistStorageException.class)
     public void deleteNotExist() {
-        storage.delete(TEST);
+        storage.delete(UUID_4);
     }
 
     @Test
