@@ -4,8 +4,7 @@ import com.urise.webapp.exeption.StorageException;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class ListStorageTest extends AbstractArrayStorageTest {
-
+public class ListStorageTest extends AbstractStorageTest {
     public ListStorageTest() {
         super(new ListStorage());
     }
@@ -13,5 +12,6 @@ public class ListStorageTest extends AbstractArrayStorageTest {
     @Ignore
     @Test(expected = StorageException.class)
     public void saveStorageOverflow() throws Exception {
+
     }
 }

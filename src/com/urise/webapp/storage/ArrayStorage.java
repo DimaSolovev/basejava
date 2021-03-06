@@ -16,11 +16,11 @@ public class ArrayStorage extends AbstractArrayStorage {
         return -1;
     }
 
-    public void saveIndex(Resume resume, int index) {
+    public void insertElement(Resume resume, int index) {
         storage[size] = resume;
     }
 
-    public void deleteIndex(String uuid, int index) {
+    public void fillDeletedElement(String uuid, int index) {
         storage[index] = storage[size - 1];
     }
 }
