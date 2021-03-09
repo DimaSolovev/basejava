@@ -8,9 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-public class AbstractStorageTest {
+public abstract class AbstractStorageTest {
 
     private Storage storage;
     private static final String UUID_1 = "uuid1";
