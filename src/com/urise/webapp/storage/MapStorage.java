@@ -32,10 +32,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     int getSearchKey(String uuid) {
-        if (mapStorage.containsKey(uuid)) {
-            return 0;
-        }
-        return -1;
+        return mapStorage.containsKey(uuid) ? 0 : -1;
     }
 
     @Override

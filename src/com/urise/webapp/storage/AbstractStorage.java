@@ -8,48 +8,58 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        int index = getSearchKey(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            updateStorage(resume, index);
-        }
+//        int searchKey = getSearchKey(resume.getUuid());
+//        if (searchKey < 0) {
+//            throw new NotExistStorageException(resume.getUuid());
+//        } else {
+//            updateStorage(resume, searchKey);
+//        }
+        updateStorage(resume, checkNotExistException(resume.getUuid()));
     }
 
-    abstract void updateStorage(Resume resume, int index);
+    abstract void updateStorage(Resume resume, int searchKey);
 
     @Override
     public void save(Resume resume) {
-        int index = getSearchKey(resume.getUuid());
-        if (index >= 0) {
+        int searchKey = getSearchKey(resume.getUuid());
+        if (searchKey >= 0) {
             throw new ExistStorageException(resume.getUuid());
         }
-        saveToStorage(resume, index);
+        saveToStorage(resume, searchKey);
     }
 
-    abstract void saveToStorage(Resume resume, int index);
+    abstract void saveToStorage(Resume resume, int searchKey);
 
     @Override
     public Resume get(String uuid) {
-        int index = getSearchKey(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return getFromStorage(uuid, index);
+//        int searchKey = getSearchKey(uuid);
+//        if (searchKey < 0) {
+//            throw new NotExistStorageException(uuid);
+//        }
+        return getFromStorage(uuid, checkNotExistException(uuid));
     }
 
-    abstract Resume getFromStorage(String uuid, int index);
+    abstract Resume getFromStorage(String uuid, int searchKey);
 
     @Override
     public void delete(String uuid) {
-        int index = getSearchKey(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        deleteFromStorage(uuid, index);
+//        int searchKey = getSearchKey(uuid);
+//        if (searchKey < 0) {
+//            throw new NotExistStorageException(uuid);
+//        }
+        //deleteFromStorage(uuid, searchKey);
+        deleteFromStorage(uuid, checkNotExistException(uuid));
     }
 
-    abstract void deleteFromStorage(String uuid, int index);
+    abstract void deleteFromStorage(String uuid, int searchKey);
 
     abstract int getSearchKey(String uuid);
+
+    private int checkNotExistException(String uuid) {
+        int searchKey = getSearchKey(uuid);
+        if (searchKey < 0) {
+            throw new NotExistStorageException(uuid);
+        }
+        return searchKey;
+    }
 }
