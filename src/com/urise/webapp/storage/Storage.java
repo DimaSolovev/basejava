@@ -14,10 +14,8 @@ public interface Storage {
 
     void clear();
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     Resume[] getAll();
+    //List<Resume> getAllSorted();
 
     int size();
 

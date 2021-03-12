@@ -4,17 +4,15 @@ import com.urise.webapp.exeption.StorageException;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class MapStorageTest extends AbstractStorageTest {
 
     public MapStorageTest() {
-        super(new MapStorage());
+        super(new MapUuidStorage());
     }
 
     @Ignore
     @Test(expected = StorageException.class)
-    public void saveStorageOverflow() throws Exception {
+    public void saveOverflow() throws Exception {
 
     }
 }

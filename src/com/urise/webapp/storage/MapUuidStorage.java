@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
 
     private Map<String, Resume> mapStorage = new HashMap<>();
 
@@ -31,7 +31,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    int getSearchKey(String uuid) {
+    Integer getSearchKey(String uuid) {
         return mapStorage.containsKey(uuid) ? 0 : -1;
     }
 

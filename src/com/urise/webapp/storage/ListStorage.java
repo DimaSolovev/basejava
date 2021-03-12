@@ -9,7 +9,7 @@ public class ListStorage extends AbstractStorage {
 
     private List<Resume> storageList = new ArrayList<>();
 
-    protected int getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < storageList.size(); i++) {
             if (storageList.get(i).getUuid().equals(uuid)) {
                 return i;

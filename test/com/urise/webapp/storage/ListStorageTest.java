@@ -11,7 +11,7 @@ public class ListStorageTest extends AbstractStorageTest {
 
     @Ignore
     @Test(expected = StorageException.class)
-    public void saveStorageOverflow() throws Exception {
+    public void saveOverflow() throws Exception {
 
     }
 }

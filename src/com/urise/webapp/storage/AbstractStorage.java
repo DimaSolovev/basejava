@@ -38,7 +38,7 @@ public abstract class AbstractStorage implements Storage {
 
     abstract void deleteFromStorage(String uuid, int searchKey);
 
-    abstract int getSearchKey(String uuid);
+    abstract Integer getSearchKey(String uuid);
 
     private int getSearchKeyIfExist(String uuid) {
         int searchKey = getSearchKey(uuid);
