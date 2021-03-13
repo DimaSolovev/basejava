@@ -2,7 +2,6 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.NotExistStorageException;
-import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,11 +9,11 @@ import org.junit.Test;
 
 public abstract class AbstractStorageTest {
 
-    private Storage storage;
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
+    Storage storage;
+    static final String UUID_1 = "uuid1";
+    static final String UUID_2 = "uuid2";
+    static final String UUID_3 = "uuid3";
+    static final String UUID_4 = "uuid4";
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -65,18 +64,6 @@ public abstract class AbstractStorageTest {
     @Test(expected = ExistStorageException.class)
     public void saveExistException() throws Exception {
         storage.save(new Resume(UUID_1));
-    }
-
-    @Test(expected = StorageException.class)
-    public void saveOverflow() throws Exception {
-        try {
-            for (int i = storage.size(); i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume(UUID_1 + i));
-            }
-        } catch (Exception e) {
-            Assert.fail("storage is overflowed to early");
-        }
-        storage.save(new Resume(UUID_4));
     }
 
     @Test
