@@ -2,7 +2,14 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MapResumeStorage extends AbstractStorage{
+
+    private Map<String, Resume> mapStorage = new HashMap<>();
+
     @Override
     void updateStorage(Resume resume, int searchKey) {
 
@@ -34,8 +41,8 @@ public class MapResumeStorage extends AbstractStorage{
     }
 
     @Override
-    public Resume[] getAll() {
-        return new Resume[0];
+    public List<Resume> getAllSorted() {
+        return null;
     }
 
     @Override
