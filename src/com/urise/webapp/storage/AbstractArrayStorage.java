@@ -4,7 +4,6 @@ import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
@@ -46,13 +45,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    @Override
-    public List<Resume> getAllSorted() {
+    public List<Resume> getListResumes() {
         Resume[] resumes = new Resume[size];
         if (size >= 0) System.arraycopy(storage, 0, resumes, 0, size);
-        List<Resume> list = Arrays.asList(resumes);
-        Collections.sort(list,COMPARATOR);
-        return list;
+        return Arrays.asList(resumes);
     }
 
     abstract void insertElement(Resume resume, int index);
