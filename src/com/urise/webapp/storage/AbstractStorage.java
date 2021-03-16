@@ -12,15 +12,17 @@ public abstract class AbstractStorage implements Storage {
     static final Comparator<Resume> COMPARATOR = Comparator.comparing(Resume::getFullName)
             .thenComparing(Resume::getUuid);
 
-    abstract void doUpdate(Resume resume, int searchKey);
+    protected abstract void doUpdate(Resume resume, int searchKey);
 
-    abstract void doSave(Resume resume, int searchKey);
+    protected abstract void doSave(Resume resume, int searchKey);
 
-    abstract Resume doGet(String uuid, int searchKey);
+    protected abstract Resume doGet(String uuid, int searchKey);
 
-    abstract void doDelete(String uuid, int searchKey);
+    protected abstract void doDelete(String uuid, int searchKey);
 
-    abstract Integer getSearchKey(String uuid);
+    protected abstract Integer getSearchKey(String uuid);
+
+    protected abstract boolean isExist(Object searchKey);
 
     @Override
     public void update(Resume resume) {

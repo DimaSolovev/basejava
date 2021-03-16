@@ -55,5 +55,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     abstract void fillDeletedElement(String uuid, int index);
 
-    abstract Integer getSearchKey(String uuid);
+    protected abstract Integer getSearchKey(String uuid);
 }
