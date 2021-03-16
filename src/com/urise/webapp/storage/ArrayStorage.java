@@ -16,10 +16,12 @@ public class ArrayStorage extends AbstractArrayStorage {
         return -1;
     }
 
+    @Override
     public void insertElement(Resume resume, int index) {
         storage[size] = resume;
     }
 
+    @Override
     public void fillDeletedElement(int index) {
         storage[index] = storage[size - 1];
     }

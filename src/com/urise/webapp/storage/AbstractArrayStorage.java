@@ -1,6 +1,6 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exeption.ExistStorageException;
+import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -12,29 +12,32 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size;
 
-
     public int size() {
         return size;
     }
 
-    public Resume doGet(int index) {
-        return storage[index];
+    @Override
+    public Resume doGet(Object index) {
+        return storage[(Integer) index];
     }
 
-    public void doUpdate(Resume resume, int index) {
-        storage[index] = resume;
+    @Override
+    public void doUpdate(Resume resume, Object index) {
+        storage[(Integer) index] = resume;
     }
 
-    public void doSave(Resume resume, int index) {
-        if (size == storage.length) {
-            throw new ExistStorageException(resume.getUuid());
+    public void doSave(Resume resume, Object index) {
+        if (size == STORAGE_LIMIT) {
+            throw new StorageException("Storage overflow", resume.getUuid());
+        } else {
+            insertElement(resume, (Integer) index);
+            size++;
         }
-        insertElement(resume, index);
-        size++;
     }
 
-    public void doDelete(int index) {
-        fillDeletedElement(index);
+    @Override
+    public void doDelete(Object index) {
+        fillDeletedElement((Integer) index);
         storage[size - 1] = null;
         size--;
     }
@@ -51,14 +54,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return Arrays.asList(resumes);
     }
 
-    abstract void insertElement(Resume resume, int index);
+    protected abstract void insertElement(Resume resume, int index);
 
-    abstract void fillDeletedElement(int index);
+    protected abstract void fillDeletedElement(int index);
 
     protected abstract Integer getSearchKey(String uuid);
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return false;
+    protected boolean isExist(Object index) {
+        return (Integer) index >= 0;
     }
 }
