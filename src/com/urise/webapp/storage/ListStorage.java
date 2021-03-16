@@ -18,20 +18,20 @@ public class ListStorage extends AbstractStorage {
         return -1;
     }
 
-    public void updateStorage(Resume resume, int index) {
+    public void doUpdate(Resume resume, int index) {
         storageList.set(index, resume);
     }
 
-    public void saveToStorage(Resume resume, int index) {
+    public void doSave(Resume resume, int index) {
         storageList.add(resume);
     }
 
-    public Resume getFromStorage(String uuid, int index) {
+    public Resume doGet(String uuid, int index) {
         return storageList.get(index);
     }
 
     @Override
-    public void deleteFromStorage(String uuid, int index) {
+    public void doDelete(String uuid, int index) {
         storageList.remove(index);
     }
 

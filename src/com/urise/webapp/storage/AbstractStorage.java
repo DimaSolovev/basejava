@@ -12,12 +12,20 @@ public abstract class AbstractStorage implements Storage {
     static final Comparator<Resume> COMPARATOR = Comparator.comparing(Resume::getFullName)
             .thenComparing(Resume::getUuid);
 
+    abstract void doUpdate(Resume resume, int searchKey);
+
+    abstract void doSave(Resume resume, int searchKey);
+
+    abstract Resume doGet(String uuid, int searchKey);
+
+    abstract void doDelete(String uuid, int searchKey);
+
+    abstract Integer getSearchKey(String uuid);
+
     @Override
     public void update(Resume resume) {
-        updateStorage(resume, getSearchKeyIfExist(resume.getUuid()));
+        doUpdate(resume, getSearchKeyIfExist(resume.getUuid()));
     }
-
-    abstract void updateStorage(Resume resume, int searchKey);
 
     @Override
     public void save(Resume resume) {
@@ -25,26 +33,18 @@ public abstract class AbstractStorage implements Storage {
         if (searchKey >= 0) {
             throw new ExistStorageException(resume.getUuid());
         }
-        saveToStorage(resume, searchKey);
+        doSave(resume, searchKey);
     }
-
-    abstract void saveToStorage(Resume resume, int searchKey);
 
     @Override
     public Resume get(String uuid) {
-        return getFromStorage(uuid, getSearchKeyIfExist(uuid));
+        return doGet(uuid, getSearchKeyIfExist(uuid));
     }
-
-    abstract Resume getFromStorage(String uuid, int searchKey);
 
     @Override
     public void delete(String uuid) {
-        deleteFromStorage(uuid, getSearchKeyIfExist(uuid));
+        doDelete(uuid, getSearchKeyIfExist(uuid));
     }
-
-    abstract void deleteFromStorage(String uuid, int searchKey);
-
-    abstract Integer getSearchKey(String uuid);
 
     private int getSearchKeyIfExist(String uuid) {
         int searchKey = getSearchKey(uuid);
@@ -53,6 +53,7 @@ public abstract class AbstractStorage implements Storage {
         }
         return searchKey;
     }
+
     public List<Resume> getAllSorted(){
         List<Resume> listResumes = getListResumes();
         listResumes.sort(COMPARATOR);

@@ -12,22 +12,22 @@ public class MapResumeStorage extends AbstractStorage {
     private Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
-    void updateStorage(Resume resume, int searchKey) {
+    void doUpdate(Resume resume, int searchKey) {
         mapStorage.put(resume.getUuid(), resume);
     }
 
     @Override
-    void saveToStorage(Resume resume, int searchKey) {
+    void doSave(Resume resume, int searchKey) {
         mapStorage.put(resume.getUuid(), resume);
     }
 
     @Override
-    Resume getFromStorage(String uuid, int searchKey) {
+    Resume doGet(String uuid, int searchKey) {
         return mapStorage.get(uuid);
     }
 
     @Override
-    void deleteFromStorage(String uuid, int searchKey) {
+    void doDelete(String uuid, int searchKey) {
         mapStorage.remove(uuid);
     }
 
