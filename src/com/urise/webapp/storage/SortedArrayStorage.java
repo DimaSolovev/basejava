@@ -17,11 +17,11 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         System.arraycopy(storage, index + 1, storage, index, size - index - 1);
     }
 
-    private static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
+    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     @Override
     protected Integer getSearchKey(String uuid) {
-        Resume searchKey = new Resume(uuid);
+        Resume searchKey = new Resume(uuid,"name");
         return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
     }
 }
