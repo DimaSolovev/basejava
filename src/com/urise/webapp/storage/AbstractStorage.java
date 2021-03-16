@@ -16,9 +16,9 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void doSave(Resume resume, int searchKey);
 
-    protected abstract Resume doGet(String uuid, int searchKey);
+    protected abstract Resume doGet(int searchKey);
 
-    protected abstract void doDelete(String uuid, int searchKey);
+    protected abstract void doDelete(int searchKey);
 
     protected abstract Integer getSearchKey(String uuid);
 
@@ -40,12 +40,12 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        return doGet(uuid, getSearchKeyIfExist(uuid));
+        return doGet(getSearchKeyIfExist(uuid));
     }
 
     @Override
     public void delete(String uuid) {
-        doDelete(uuid, getSearchKeyIfExist(uuid));
+        doDelete(getSearchKeyIfExist(uuid));
     }
 
     private int getSearchKeyIfExist(String uuid) {

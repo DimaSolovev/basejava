@@ -18,6 +18,11 @@ public class ListStorage extends AbstractStorage {
         return -1;
     }
 
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return false;
+    }
+
     public void doUpdate(Resume resume, int index) {
         storageList.set(index, resume);
     }
@@ -26,12 +31,12 @@ public class ListStorage extends AbstractStorage {
         storageList.add(resume);
     }
 
-    public Resume doGet(String uuid, int index) {
+    public Resume doGet(int index) {
         return storageList.get(index);
     }
 
     @Override
-    public void doDelete(String uuid, int index) {
+    public void doDelete(int index) {
         storageList.remove(index);
     }
 

@@ -19,18 +19,23 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(String uuid, int index) {
-        return mapStorage.get(uuid);
+    protected Resume doGet(int index) {
+        return mapStorage.get(index);
     }
 
     @Override
-    protected void doDelete(String uuid, int index) {
-        mapStorage.remove(uuid);
+    protected void doDelete(int index) {
+        mapStorage.remove(index);
     }
 
     @Override
     protected Integer getSearchKey(String uuid) {
         return mapStorage.containsKey(uuid) ? 0 : -1;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return mapStorage.containsKey(searchKey);
     }
 
     @Override

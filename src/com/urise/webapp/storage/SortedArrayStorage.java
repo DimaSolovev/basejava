@@ -13,7 +13,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         storage[index] = resume;
     }
 
-    public void fillDeletedElement(String uuid, int index) {
+    public void fillDeletedElement(int index) {
         System.arraycopy(storage, index + 1, storage, index, size - index - 1);
     }
 

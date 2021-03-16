@@ -17,7 +17,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    public Resume doGet(String uuid, int index) {
+    public Resume doGet(int index) {
         return storage[index];
     }
 
@@ -33,8 +33,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size++;
     }
 
-    public void doDelete(String uuid, int index) {
-        fillDeletedElement(uuid, index);
+    public void doDelete(int index) {
+        fillDeletedElement(index);
         storage[size - 1] = null;
         size--;
     }
@@ -53,7 +53,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     abstract void insertElement(Resume resume, int index);
 
-    abstract void fillDeletedElement(String uuid, int index);
+    abstract void fillDeletedElement(int index);
 
     protected abstract Integer getSearchKey(String uuid);
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return false;
+    }
 }
