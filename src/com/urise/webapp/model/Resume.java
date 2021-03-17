@@ -12,6 +12,8 @@ public class Resume implements Comparable<Resume> {
     private final String fullName;
 
     public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "full name mustn't be null");
+        Objects.requireNonNull(fullName, "full name mustn't be null");
         this.uuid = uuid;
         this.fullName = fullName;
     }
@@ -48,6 +50,7 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public int compareTo(Resume o) {
-        return uuid.compareTo(o.uuid);
+        int cmp = fullName.compareTo(o.fullName);
+        return cmp != 0 ? cmp : uuid.compareTo(o.uuid);
     }
 }

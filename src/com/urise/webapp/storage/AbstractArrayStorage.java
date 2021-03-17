@@ -48,7 +48,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public List<Resume> getListResumes() {
+    public List<Resume> doCopyAll() {
         Resume[] resumes = new Resume[size];
         if (size >= 0) System.arraycopy(storage, 0, resumes, 0, size);
         return Arrays.asList(resumes);

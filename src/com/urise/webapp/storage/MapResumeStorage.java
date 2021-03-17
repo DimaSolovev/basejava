@@ -12,7 +12,7 @@ public class MapResumeStorage extends AbstractStorage {
     private Map<String, Resume> mapStorage = new HashMap<>();
 
     @Override
-    protected void doUpdate(Resume resume, Object searchKey) {
+    protected void doUpdate(Resume resume, Object uuid) {
         mapStorage.put(resume.getUuid(), resume);
     }
 
@@ -46,7 +46,7 @@ public class MapResumeStorage extends AbstractStorage {
         mapStorage.clear();
     }
 
-    public List<Resume> getListResumes() {
+    public List<Resume> doCopyAll() {
         return new ArrayList<>(mapStorage.values());
     }
 

@@ -43,7 +43,7 @@ public class MapUuidStorage extends AbstractStorage {
         mapStorage.clear();
     }
 
-    public List<Resume> getListResumes() {
+    public List<Resume> doCopyAll() {
         return new ArrayList<>(mapStorage.values());
     }
 
