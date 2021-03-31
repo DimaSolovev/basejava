@@ -1,8 +1,6 @@
 package com.urise.webapp.model;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Initial resume class
@@ -11,14 +9,24 @@ public class Resume implements Comparable<Resume> {
 
     private final String uuid;
     private final String fullName;
-    public Map<ContactType,String> contacts;
-    public Map<SectionType,AbstractSection> typeMap;
+    public Map<ContactType, String> contacts = new EnumMap<ContactType, String>(ContactType.class);
+    public Map<SectionType, AbstractSection> typeMap = new EnumMap<SectionType, AbstractSection>(SectionType.class);
 
     public Resume(String uuid, String fullName) {
         Objects.requireNonNull(uuid, "full name mustn't be null");
         Objects.requireNonNull(fullName, "full name mustn't be null");
         this.uuid = uuid;
         this.fullName = fullName;
+    }
+
+    public static void printResume(Resume resume) {
+        System.out.println(resume.fullName);
+        for (Map.Entry<ContactType, String> entry : resume.contacts.entrySet()) {
+            System.out.println(entry.getKey() + "-" + entry.getValue());
+        }
+        for (Map.Entry<SectionType, AbstractSection> entry : resume.typeMap.entrySet()) {
+            System.out.println(entry.getKey() + "-" + entry.getValue());
+        }
     }
 
     public Resume(String fullName) {

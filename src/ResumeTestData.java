@@ -44,5 +44,7 @@ public class ResumeTestData {
         resume.typeMap.put(SectionType.EXPERIENCE,experience);
         resume.typeMap.put(SectionType.EDUCATION,education);
 
+        Resume.printResume(resume);
+
     }
 }

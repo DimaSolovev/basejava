@@ -2,7 +2,8 @@ package com.urise.webapp.model;
 
 import java.time.LocalDate;
 
-public class Experience extends AbstractSection{
+public class Experience extends Organization{
+
     private LocalDate startDate;
     private LocalDate endDate;
     private String description;
