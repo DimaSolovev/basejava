@@ -15,4 +15,14 @@ public class Experience extends Organization{
         this.description = description;
         this.nameOrganization = nameOrganization;
     }
+
+    @Override
+    public String toString() {
+        return "Experience{" +
+                "startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", description='" + description + '\'' +
+                ", nameOrganization='" + nameOrganization + '\'' +
+                '}';
+    }
 }

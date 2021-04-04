@@ -20,31 +20,28 @@ public class ResumeTestData {
         objective.setText("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
 
         AchievementQualification achievement = new AchievementQualification();
-        achievement.text.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
-        achievement.text.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
+        achievement.getText().add("С 2013 года: разработка проектов ");
 
         AchievementQualification qualification = new AchievementQualification();
-        qualification.text.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
-        qualification.text.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce");
+        qualification.getText().add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
 
         Organization experience = new Organization();
-        experience.experienceList.add(new Experience(LocalDate.of(1997, Month.SEPTEMBER,01)
+        experience.getExperienceList().add(new Experience(LocalDate.of(1997, Month.SEPTEMBER,01)
                 ,LocalDate.of(2005, Month.JANUARY,01)
                 ,"Инженер по аппаратному и программному тестированию","Alcatel"));
 
         Organization education = new Organization();
-        education.experienceList.add(new Experience(LocalDate.of(1984, Month.SEPTEMBER,01)
+        education.getExperienceList().add(new Experience(LocalDate.of(1984, Month.SEPTEMBER,01)
                 ,LocalDate.of(1987, Month.JUNE,01)
                 ,"Закончил с отличием","Заочная физико-техническая школа при МФТИ"));
 
-        resume.typeMap.put(SectionType.PERSONAL,personal);
-        resume.typeMap.put(SectionType.OBJECTIVE,objective);
-        resume.typeMap.put(SectionType.ACHIEVEMENT,achievement);
-        resume.typeMap.put(SectionType.QUALIFICATIONS,qualification);
-        resume.typeMap.put(SectionType.EXPERIENCE,experience);
-        resume.typeMap.put(SectionType.EDUCATION,education);
+        resume.sections.put(SectionType.PERSONAL,personal);
+        resume.sections.put(SectionType.OBJECTIVE,objective);
+        resume.sections.put(SectionType.ACHIEVEMENT,achievement);
+        resume.sections.put(SectionType.QUALIFICATIONS,qualification);
+        resume.sections.put(SectionType.EXPERIENCE,experience);
+        resume.sections.put(SectionType.EDUCATION,education);
 
-        Resume.printResume(resume);
-
+        System.out.println(resume.toString());
     }
 }

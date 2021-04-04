@@ -5,5 +5,20 @@ import java.util.List;
 
 public class Organization extends AbstractSection{
 
-    public List<Experience> experienceList = new ArrayList<>();
+    private List<Experience> experienceList = new ArrayList<>();
+
+    public List<Experience> getExperienceList() {
+        return experienceList;
+    }
+
+    public void setExperienceList(List<Experience> experienceList) {
+        this.experienceList = experienceList;
+    }
+
+    @Override
+    public String toString() {
+        return "Organization{" +
+                "experienceList=" + experienceList +
+                '}';
+    }
 }
