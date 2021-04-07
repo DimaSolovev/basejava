@@ -17,9 +17,9 @@ public class ResumeTestData {
         resume.sections.put(SectionType.ACHIEVEMENT, new ListSection(new ArrayList<>(Arrays.asList("достижения"))));
         resume.sections.put(SectionType.QUALIFICATIONS, new ListSection(new ArrayList<>(Arrays.asList("квалификация"))));
         resume.sections.put(SectionType.EXPERIENCE, new OrganizationSection(new ArrayList<>(Arrays.asList(new Organization("Organization","URL",
-                DateUtil.of(2010, Month.JANUARY),DateUtil.of(2011,Month.JUNE),"title","description")))));
+                new ArrayList(Arrays.asList(DateUtil.of(2010, Month.JANUARY),DateUtil.of(2011,Month.JUNE),"title","description")))))));
         resume.sections.put(SectionType.EDUCATION, new OrganizationSection(new ArrayList<>(Arrays.asList(new Organization("Organization","URL",
-                DateUtil.of(2010, Month.JANUARY),DateUtil.of(2011,Month.JUNE),"title","description")))));
+                new ArrayList(Arrays.asList(DateUtil.of(2010, Month.JANUARY),DateUtil.of(2011,Month.JUNE),"title","description")))))));
 
         return resume;
     }

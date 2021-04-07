@@ -1,25 +1,20 @@
 package com.urise.webapp.model;
 
-import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class Organization {
 
     private final Link homePage;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final String title;
-    private final String description;
+    private List<Post> postList;
 
-    public Organization( String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
-        Objects.requireNonNull(startDate,"startDate must not be null");
-        Objects.requireNonNull(endDate,"endDate must not be null");
-        Objects.requireNonNull(title,"title must not be null");
+    public Organization( String name, String url, List<Post> postList) {
+//        Objects.requireNonNull(startDate,"startDate must not be null");
+//        Objects.requireNonNull(endDate,"endDate must not be null");
+//        Objects.requireNonNull(title,"title must not be null");
+        Objects.requireNonNull(postList,"postList must not be null");
         this.homePage = new Link(name,url);
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.title = title;
-        this.description = description;
+        this.postList = postList;
     }
 
     @Override
@@ -27,22 +22,19 @@ public class Organization {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return homePage.equals(that.homePage) && startDate.equals(that.startDate) && endDate.equals(that.endDate) && title.equals(that.title) && Objects.equals(description, that.description);
+        return homePage.equals(that.homePage) && postList.equals(that.postList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(homePage, startDate, endDate, title, description);
+        return Objects.hash(homePage, postList);
     }
 
     @Override
     public String toString() {
         return "Organization{" +
                 "homePage=" + homePage +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
+                ", postList=" + postList +
                 '}';
     }
 }
