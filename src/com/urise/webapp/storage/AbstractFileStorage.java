@@ -5,10 +5,12 @@ import com.urise.webapp.model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
+
     private File directory;
 
     protected AbstractFileStorage(File directory) {
@@ -24,7 +26,11 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doUpdate(Resume resume, File file) {
-
+        try {
+            doWrite(resume,file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -41,12 +47,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume doGet(File file) {
-        return null;
+        return doRead(file);
     }
+
+    protected abstract Resume doRead(File file);
 
     @Override
     protected void doDelete(File file) {
-
+        file.delete();
     }
 
     @Override
@@ -61,16 +69,24 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> doCopyAll() {
-        return null;
+        List<Resume> resumeList = new ArrayList<>();
+        File[]files = directory.listFiles();
+        for (File f: files){
+            resumeList.add(doGet(f));
+        }
+        return resumeList;
     }
 
     @Override
     public void clear() {
-
+        File[] files = directory.listFiles();
+        for(File file: files){
+            file.delete();
+        }
     }
 
     @Override
     public int size() {
-        return 0;
+        return directory.listFiles().length;
     }
 }
