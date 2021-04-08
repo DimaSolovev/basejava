@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection extends Section {
+public class ListSection extends AbstractSection {
     private List<String> items = new ArrayList<>();
 
     public ListSection(List<String> text) {

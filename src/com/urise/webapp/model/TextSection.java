@@ -2,8 +2,14 @@ package com.urise.webapp.model;
 
 import java.util.Objects;
 
-public class TextSection extends Section {
+public class TextSection extends AbstractSection {
+
     private String content;
+
+    public TextSection(String text) {
+        Objects.requireNonNull(text, "text must not be null");
+        this.content = text;
+    }
 
     public String getContent() {
         return content;
@@ -13,14 +19,9 @@ public class TextSection extends Section {
         this.content = content;
     }
 
-    public TextSection(String text) {
-        Objects.requireNonNull(text,"text must not be null");
-        this.content = text;
-    }
-
     @Override
     public String toString() {
-        return content ;
+        return content;
     }
 
     @Override

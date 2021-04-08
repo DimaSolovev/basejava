@@ -9,8 +9,6 @@ public class Resume implements Comparable<Resume> {
 
     private final String uuid;
     private final String fullName;
-    public Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-    public Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String uuid, String fullName) {
         Objects.requireNonNull(uuid, "full name mustn't be null");
@@ -19,11 +17,14 @@ public class Resume implements Comparable<Resume> {
         this.fullName = fullName;
     }
 
-    public String getContact(ContactType type){
+    public Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    public Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
+
+    public String getContact(ContactType type) {
         return contacts.get(type);
     }
 
-    public Section getSection(SectionType type){
+    public AbstractSection getSection(SectionType type) {
         return sections.get(type);
     }
 

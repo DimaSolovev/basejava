@@ -5,8 +5,11 @@ public class MainFile {
         if(file.isFile()){
             System.out.println(file.getName());
         }else if(file.isDirectory()) {
-            File[] arr = file.listFiles();
-            for (File fil: arr){
+            File[] files = file.listFiles();
+            if(files==null){
+                return;
+            }
+            for (File fil: files){
                 recursion(fil);
             }
         }
@@ -35,7 +38,8 @@ public class MainFile {
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
-        File dir = new File("C:\\D\\BaseJava\\basejava");
+        //File dir = new File("C:\\D\\BaseJava\\basejava");
+        File dir = new File("C:/D/BaseJava/basejava");
         recursion(dir);
     }
 }

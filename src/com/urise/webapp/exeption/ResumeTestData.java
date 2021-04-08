@@ -1,3 +1,5 @@
+package com.urise.webapp.exeption;
+
 import com.urise.webapp.model.*;
 import com.urise.webapp.util.DateUtil;
 
