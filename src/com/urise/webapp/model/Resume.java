@@ -9,6 +9,12 @@ public class Resume implements Comparable<Resume> {
 
     private final String uuid;
     private final String fullName;
+    public Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    public Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
+
+    public Resume(String fullName) {
+        this(UUID.randomUUID().toString(), fullName);
+    }
 
     public Resume(String uuid, String fullName) {
         Objects.requireNonNull(uuid, "full name mustn't be null");
@@ -17,19 +23,12 @@ public class Resume implements Comparable<Resume> {
         this.fullName = fullName;
     }
 
-    public Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-    public Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
-
     public String getContact(ContactType type) {
         return contacts.get(type);
     }
 
     public AbstractSection getSection(SectionType type) {
         return sections.get(type);
-    }
-
-    public Resume(String fullName) {
-        this(UUID.randomUUID().toString(), fullName);
     }
 
     public String getFullName() {
@@ -45,7 +44,9 @@ public class Resume implements Comparable<Resume> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName) && Objects.equals(contacts, resume.contacts) && Objects.equals(sections, resume.sections);
+        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName)
+                && Objects.equals(contacts, resume.contacts) && Objects.equals(sections,
+                resume.sections);
     }
 
     @Override

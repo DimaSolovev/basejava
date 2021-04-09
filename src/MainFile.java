@@ -1,19 +1,20 @@
 import java.io.File;
 
 public class MainFile {
-    public static void recursion(File file){
-        if(file.isFile()){
+    public static void recursion(File file) {
+        if (file.isFile()) {
             System.out.println(file.getName());
-        }else if(file.isDirectory()) {
+        } else if (file.isDirectory()) {
             File[] files = file.listFiles();
-            if(files==null){
+            if (files == null) {
                 return;
             }
-            for (File fil: files){
+            for (File fil : files) {
                 recursion(fil);
             }
         }
     }
+
     public static void main(String[] args) {
 //        String filePath = ".\\.gitignore";
 //
@@ -39,7 +40,7 @@ public class MainFile {
 //            throw new RuntimeException(e);
 //        }
         //File dir = new File("C:\\D\\BaseJava\\basejava");
-        File dir = new File("C:/D/BaseJava/basejava");
+        File dir = new File(".");
         recursion(dir);
     }
 }
