@@ -5,9 +5,9 @@ import com.urise.webapp.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamStorage extends AbstractFileStorage implements ObjectStreamStrategy{
-    protected ObjectStreamStorage(File directory) {
-        super(directory);
+public class ObjectStreamPathStorage extends AbstractPathStorage implements ObjectStreamStrategy{
+    protected ObjectStreamPathStorage(String dir) {
+        super(dir);
     }
 
     @Override
