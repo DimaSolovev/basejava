@@ -10,7 +10,7 @@ public class ResumeTestData {
         Resume resume = new Resume(uuid, fullName);
         resume.contacts.put(ContactType.PHONE, uuid + "123456789");
         resume.contacts.put(ContactType.SKYPE, fullName + "skype");
-        resume.contacts.put(ContactType.EMAIL, fullName + "@mail.ru");
+        resume.contacts.put(ContactType.MAIL, fullName + "@mail.ru");
 
         resume.sections.put(SectionType.PERSONAL, new TextSection(fullName));
         resume.sections.put(SectionType.OBJECTIVE, new TextSection(fullName));
