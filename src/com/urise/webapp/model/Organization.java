@@ -85,5 +85,18 @@ public class Organization implements Serializable {
         public String getDescription() {
             return description;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Position position = (Position) o;
+            return Objects.equals(startDate, position.startDate) && Objects.equals(endDate, position.endDate) && Objects.equals(title, position.title) && Objects.equals(description, position.description);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(startDate, endDate, title, description);
+        }
     }
 }
