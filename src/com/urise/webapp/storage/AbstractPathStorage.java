@@ -15,13 +15,17 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     private Path directory;
 
+    protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
+
+    protected abstract Resume doRead(InputStream is) throws IOException;
+
     protected AbstractPathStorage(String dir) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
-        this.directory = directory;
+
     }
 
     @Override
@@ -43,10 +47,6 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         doUpdate(resume, path);
     }
 
-    protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
-
-    protected abstract Resume doRead(InputStream is) throws IOException;
-
     @Override
     protected Resume doGet(Path path) {
         try {
@@ -67,7 +67,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     @Override
     protected Path getSearchKey(String uuid) {
-        return Paths.get(uuid);
+        return directory.resolve(uuid);
     }
 
     @Override
@@ -104,6 +104,5 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         } catch (IOException e) {
             throw new StorageException("Directory rear error", null);
         }
-        //return directory.getNameCount();
     }
 }
