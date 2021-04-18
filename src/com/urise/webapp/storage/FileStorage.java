@@ -11,8 +11,8 @@ import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
 
-    private File directory;
-    private Strategy strategy;
+    private final File directory;
+    private final Strategy strategy;
 
     protected FileStorage(File directory, Strategy strategy) {
         Objects.requireNonNull(directory, "directory must not be null");
@@ -60,7 +60,6 @@ public class FileStorage extends AbstractStorage<File> {
         if (!file.delete()) {
             throw new StorageException("File delete error", file.getName());
         }
-        file.delete();
     }
 
     @Override
@@ -91,17 +90,17 @@ public class FileStorage extends AbstractStorage<File> {
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
-                file.delete();
+                doDelete(file);
             }
         }
     }
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        if (list == null) {
+        File[] files = directory.listFiles();
+        if (files == null) {
             throw new StorageException("Directory rear error", null);
         }
-        return directory.listFiles().length;
+        return files.length;
     }
 }

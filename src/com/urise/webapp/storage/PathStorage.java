@@ -14,8 +14,8 @@ import java.util.Objects;
 
 public class PathStorage extends AbstractStorage<Path> {
 
-    private Path directory;
-    private Strategy strategy;
+    private final Path directory;
+    private final Strategy strategy;
 
     protected PathStorage(String dir,Strategy strategy) {
         directory = Paths.get(dir);
