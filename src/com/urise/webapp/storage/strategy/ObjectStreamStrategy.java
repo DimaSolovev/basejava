@@ -1,11 +1,11 @@
-package com.urise.webapp.storage;
+package com.urise.webapp.storage.strategy;
 
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamStrategy implements Strategy{
+public class ObjectStreamStrategy implements Strategy {
     @Override
     public void doWrite(Resume resume, OutputStream os) {
         try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
@@ -16,7 +16,7 @@ public class ObjectStreamStrategy implements Strategy{
     }
 
     @Override
-    public Resume doRead(InputStream is)  {
+    public Resume doRead(InputStream is) {
         try (ObjectInputStream ois = new ObjectInputStream(is)) {
             return (Resume) ois.readObject();
         } catch (ClassNotFoundException | IOException e) {
