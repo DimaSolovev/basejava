@@ -4,20 +4,23 @@ import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.strategy.Strategy;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
 
     private final Path directory;
     private final Strategy strategy;
 
-    protected PathStorage(String dir,Strategy strategy) {
+    protected PathStorage(String dir, Strategy strategy) {
         directory = Paths.get(dir);
         this.strategy = strategy;
         Objects.requireNonNull(directory, "directory must not be null");
@@ -75,14 +78,16 @@ public class PathStorage extends AbstractStorage<Path> {
     }
 
     @Override
-    protected List<Resume> doCopyAll()  {
-        File[] files = directory.toFile().listFiles();
-        if (files == null) {
-            throw new StorageException("Directory read error", null);
-        }
-        List<Resume> list = new ArrayList<>(files.length);
-        for (File file : files) {
-            list.add(doGet(file.toPath()));
+    protected List<Resume> doCopyAll() {
+        List<Resume> list = null;
+        try {
+            Stream<Path> files = Files.list(directory);
+            if (files == null) {
+                throw new StorageException("Directory read error", null);
+            }
+            list = files.map(e->doGet(e)).collect(Collectors.toList());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return list;
     }
