@@ -4,6 +4,7 @@ import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract boolean isExist(SK searchKey);
 
-    protected abstract List<Resume> doCopyAll();
+    protected abstract List<Resume> doCopyAll() throws IOException;
 
     @Override
     public void update(Resume resume) {
@@ -71,7 +72,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         return searchKey;
     }
 
-    public List<Resume> getAllSorted() {
+    public List<Resume> getAllSorted() throws IOException {
         LOG.info("GetAllSorted" );
         List<Resume> listResumes = doCopyAll();
         Collections.sort(listResumes);

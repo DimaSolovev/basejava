@@ -2,6 +2,8 @@ import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.SortedArrayStorage;
 import com.urise.webapp.storage.Storage;
 
+import java.io.IOException;
+
 /**
  * Test for your com.urise.webapp.storage.ArrayStorage implementation
  */
@@ -33,10 +35,14 @@ public class MainTestArrayStorage {
         System.out.println("Size: " + ARRAY_STORAGE.size());
     }
 
-    static void printAll() {
+    static void printAll()  {
         System.out.println("\nGet All");
-        for (Resume r : ARRAY_STORAGE.getAllSorted()) {
-            System.out.println(r);
+        try {
+            for (Resume r : ARRAY_STORAGE.getAllSorted()) {
+                System.out.println(r);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

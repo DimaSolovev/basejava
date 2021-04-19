@@ -2,14 +2,19 @@ import java.io.File;
 
 public class MainFile {
     public static void printDeepDirectory(File dir) {
-
+        int i = 0;
+        String br = "";
         File[] files = dir.listFiles();
         if (files != null) {
             for (File file : files) {
+                i++;
+                for (int j = 0; j < i; j++) {
+                    br = br + " ";
+                }
                 if (file.isFile()) {
-                    System.out.println("   File: " + file.getName());
+                    System.out.println("File: " + file.getName());
                 } else if (file.isDirectory()) {
-                    System.out.println("Directory: " + file.getName());
+                    System.out.println(br + "Directory: " + file.getName());
                     printDeepDirectory(file);
                 }
             }
@@ -41,7 +46,9 @@ public class MainFile {
 //            throw new RuntimeException(e);
 //        }
         //File dir = new File("C:\\D\\BaseJava\\basejava");
+
         File dir = new File(".");
         printDeepDirectory(dir);
+
     }
 }
