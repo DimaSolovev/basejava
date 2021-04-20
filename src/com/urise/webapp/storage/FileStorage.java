@@ -6,6 +6,7 @@ import com.urise.webapp.storage.strategy.Strategy;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +40,6 @@ public class FileStorage extends AbstractStorage<File> {
     protected void doSave(Resume resume, File file) {
         try {
             file.createNewFile();
-
         } catch (IOException e) {
             throw new StorageException("Coudn't create file" + file.getAbsolutePath(), file.getName(), e);
         }
@@ -74,7 +74,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> doCopyAll() {
-        File[] files = getFiles("Directory read error");
+        File[] files = getFiles();
         List<Resume> list = new ArrayList<>(files.length);
         for (File file : files) {
             list.add(doGet(file));
@@ -82,25 +82,21 @@ public class FileStorage extends AbstractStorage<File> {
         return list;
     }
 
-    private File[] getFiles(String s) {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            throw new StorageException(s, null);
-        }
-        return files;
-    }
-
     @Override
     public void clear() {
-        File[] files = getFiles("Directory rear error");
-        for (File file : files) {
-            doDelete(file);
-        }
+        Arrays.stream(getFiles()).forEach(File::delete);
     }
 
     @Override
     public int size() {
-        File[] files = getFiles("Directory rear error");
-        return files.length;
+        return getFiles().length;
+    }
+
+    private File[] getFiles() {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Directory read error", null);
+        }
+        return files;
     }
 }
