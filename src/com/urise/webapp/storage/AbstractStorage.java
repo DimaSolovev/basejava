@@ -25,7 +25,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract boolean isExist(SK searchKey);
 
-    protected abstract List<Resume> doCopyAll() throws IOException;
+    protected abstract List<Resume> doCopyAll();
 
     @Override
     public void update(Resume resume) {
