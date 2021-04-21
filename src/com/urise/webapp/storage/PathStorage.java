@@ -2,7 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.strategy.Strategy;
+import com.urise.webapp.storage.strategy.StreamSerializer;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -18,9 +18,9 @@ import java.util.stream.Stream;
 public class PathStorage extends AbstractStorage<Path> {
 
     private final Path directory;
-    private final Strategy strategy;
+    private final StreamSerializer strategy;
 
-    protected PathStorage(String dir, Strategy strategy) {
+    protected PathStorage(String dir, StreamSerializer strategy) {
         directory = Paths.get(dir);
         this.strategy = strategy;
         Objects.requireNonNull(directory, "directory must not be null");
@@ -63,7 +63,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("Path delete error", null);
+            throw new StorageException("Path delete error", path.getFileName().toString(), e);
         }
     }
 
@@ -74,7 +74,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected boolean isExist(Path path) {
-        return Files.exists(path);
+        return Files.isRegularFile(path);
     }
 
     @Override
