@@ -17,10 +17,10 @@ import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
 
-    private final Path directory;
-    private final StreamSerializer strategy;
+    private Path directory;
+    private StreamSerializer strategy;
 
-    protected PathStorage(String dir, StreamSerializer strategy) {
+    public PathStorage(String dir, StreamSerializer strategy) {
         directory = Paths.get(dir);
         this.strategy = strategy;
         Objects.requireNonNull(directory, "directory must not be null");

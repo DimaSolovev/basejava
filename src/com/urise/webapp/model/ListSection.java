@@ -14,6 +14,9 @@ public class ListSection extends Section {
         this(Arrays.asList(items));
     }
 
+    public ListSection() {
+    }
+
     public ListSection(List<String> text) {
         Objects.requireNonNull(items,"items must not be null");
         this.items = text;
