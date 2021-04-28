@@ -41,8 +41,7 @@ public class DataStreamSerializer implements StreamSerializer {
                     case ("QUALIFICATIONS"):
                         ListSection listSection = (ListSection) entry.getValue();
                         List<String> list = listSection.getItems();
-                        int i = list.size();
-                        dos.writeInt(i);
+                        dos.writeInt(list.size());
                         dos.writeUTF(entry.getKey().name());
                         for (String s : list) {
                             dos.writeUTF(s);
@@ -120,8 +119,7 @@ public class DataStreamSerializer implements StreamSerializer {
                         String nameSection = dis.readUTF();
                         List<String> list = new ArrayList<>();
                         for (int i = 0; i < listSize; i++) {
-                            String str = dis.readUTF();
-                            list.add(str);
+                            list.add(dis.readUTF());
                         }
                         resume.addSection(SectionType.valueOf(nameSection), new ListSection(list));
                         break;
