@@ -48,6 +48,7 @@ public class DataStreamSerializer implements StreamSerializer {
                         }
                         break;
                     case ("EXPERIENCE"):
+                    case ("EDUCATION"):
                         OrganizationSection organizationSection = (OrganizationSection) entry.getValue();
                         List<Organization> listOrg = organizationSection.getOrganizations();//список организаций
                         dos.writeInt(listOrg.size());//размер списка организаций
@@ -55,11 +56,9 @@ public class DataStreamSerializer implements StreamSerializer {
                             List<Organization.Position> listPos = org.getPositions();//получаем список позиций в каждой организации
                             dos.writeInt(listPos.size());//размер списка позиций
                             for (Organization.Position op : listPos) {//проходим по списку позиций
-
+                                dos.writeInt(op.getStartDate());
                             }
                         }
-                        break;
-                    case ("EDUCATION"):
                         break;
                 }
             }
