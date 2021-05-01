@@ -24,11 +24,11 @@ public class DataStreamSerializer implements StreamSerializer {
 
             Map<SectionType, Section> sections = r.getSections();
 
-            List<SectionType> types = new ArrayList<>(sections.keySet());
-            dos.writeInt(types.size());
-            for (SectionType type : types) {
-                dos.writeUTF(type.name());
-            }
+//            List<SectionType> types = new ArrayList<>(sections.keySet());
+//            dos.writeInt(types.size());
+//            for (SectionType type : types) {
+//                dos.writeUTF(type.name());
+//            }
 
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
                 switch (entry.getKey().name()) {
@@ -41,50 +41,28 @@ public class DataStreamSerializer implements StreamSerializer {
                     case ("QUALIFICATIONS"):
                         ListSection listSection = (ListSection) entry.getValue();
                         List<String> list = listSection.getItems();
-                        dos.writeInt(list.size());
                         dos.writeUTF(entry.getKey().name());
+                        dos.writeInt(list.size());
                         for (String s : list) {
                             dos.writeUTF(s);
                         }
                         break;
                     case ("EXPERIENCE"):
+                        OrganizationSection organizationSection = (OrganizationSection) entry.getValue();
+                        List<Organization> listOrg = organizationSection.getOrganizations();//список организаций
+                        dos.writeInt(listOrg.size());//размер списка организаций
+                        for (Organization org : listOrg){ //проходим по списку организаций
+                            List<Organization.Position> listPos = org.getPositions();//получаем список позиций в каждой организации
+                            dos.writeInt(listPos.size());//размер списка позиций
+                            for (Organization.Position op : listPos) {//проходим по списку позиций
+
+                            }
+                        }
                         break;
                     case ("EDUCATION"):
                         break;
-
                 }
-
             }
-//            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
-//                if (entry.getKey().name().equals("OBJECTIVE") || entry.getKey().name().equals("PERSONAL")) {
-//                    dos.writeUTF(entry.getKey().name());
-//                    dos.writeUTF(String.valueOf(entry.getValue()));
-//                } else if (entry.getKey().name().equals("ACHIEVEMENT") || entry.getKey().name().equals("QUALIFICATIONS")) {
-//                    ListSection listSection = (ListSection) entry.getValue();
-//                    List<String> list = listSection.getItems();
-//                    int i = list.size();
-//                    dos.writeInt(i);
-//                    dos.writeUTF(entry.getKey().name());
-//                    for (String s : list) {
-//                        dos.writeUTF(s);
-//                    }
-//                } else if (entry.getKey().name().equals("EXPERIENCE") || entry.getKey().name().equals("EDUCATION")) {
-//                    OrganizationSection organizationSection = (OrganizationSection) entry.getValue();
-//                    List<Organization>listOrg = organizationSection.getOrganizations();
-//                    int listOrgSize = listOrg.size();
-//                    dos.writeInt(listOrgSize);
-//                    for (Organization org:listOrg){
-//                        List<Organization.Position>listPos = org.getPositions();
-//                        int posSize = listPos.size();
-//                        dos.writeInt(posSize);
-//                        for (Organization.Position op:listPos){
-//                            dos.
-//                        }
-//                    }
-//                }
-//            }
-
-
             // TODO implements sections
         }
     }
@@ -100,52 +78,27 @@ public class DataStreamSerializer implements StreamSerializer {
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-
-            int typeSize = dis.readInt();
-            List<String> sectionTypes = new ArrayList<>();
-            for (int i = 0; i < typeSize; i++) {
-                sectionTypes.add(dis.readUTF());
-            }
-
-            for (String s : sectionTypes) {
-                switch (s) {
+            String section = null;
+            while (dis.available()>0){
+                switch ( section = dis.readUTF()) {
                     case ("OBJECTIVE"):
                     case ("PERSONAL"):
-                        resume.addSection(SectionType.valueOf(dis.readUTF()), new TextSection(dis.readUTF()));
+                        resume.addSection(SectionType.valueOf(section), new TextSection(dis.readUTF()));
                         break;
                     case ("ACHIEVEMENT"):
                     case ("QUALIFICATIONS"):
                         int listSize = dis.readInt();
-                        String nameSection = dis.readUTF();
                         List<String> list = new ArrayList<>();
                         for (int i = 0; i < listSize; i++) {
                             list.add(dis.readUTF());
                         }
-                        resume.addSection(SectionType.valueOf(nameSection), new ListSection(list));
+                        resume.addSection(SectionType.valueOf(section), new ListSection(list));
                         break;
                     case ("EXPERIENCE"):
-                        break;
                     case ("EDUCATION"):
                         break;
                 }
             }
-
-
-//            for (int i = 0; i < typeSize; i++) {
-//                resume.addSection(SectionType.valueOf(dis.readUTF()), new TextSection(dis.readUTF()));
-//            }
-//
-//            for (int i = 0; i < 2; i++) {
-//                int listSize = dis.readInt();
-//                String nameSection = dis.readUTF();
-//                List<String> list = new ArrayList<>();
-//                for (int j = 0; j < listSize; j++) {
-//                    String str = dis.readUTF();
-//                    list.add(str);
-//                }
-//                resume.addSection(SectionType.valueOf(nameSection), new ListSection(list));
-//            }
-
             // TODO implements sections
             return resume;
         }
