@@ -21,7 +21,7 @@ public class Organization implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private  Link homePage;
+    private Link homePage;
     private List<Position> positions = new ArrayList<>();
 
     public List<Position> getPositions() {
@@ -31,13 +31,17 @@ public class Organization implements Serializable {
     public Organization() {
     }
 
-    public Organization(String name, String url, Position...positions){
+    public Organization(String name, String url, Position... positions) {
         this(new Link(name, url), Arrays.asList(positions));
     }
 
     public Organization(Link homePage, List<Position> positions) {
         this.homePage = homePage;
         this.positions = positions;
+    }
+
+    public Link getHomePage() {
+        return homePage;
     }
 
     @Override
@@ -55,11 +59,12 @@ public class Organization implements Serializable {
 
     @Override
     public String toString() {
-        return "Organization{" + homePage +" , " + positions + '}';
+        return "Organization{" + homePage + " , " + positions + '}';
     }
 
+    //**********************************************************************************
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Position implements Serializable{
+    public static class Position implements Serializable {
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate startDate;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
@@ -70,16 +75,16 @@ public class Organization implements Serializable {
         public Position() {
         }
 
-        public Position(int startYear, Month startMonth, String title, String description){
-            this(DateUtil.of(startYear,startMonth),NOW, title,description);
+        public Position(int startYear, Month startMonth, String title, String description) {
+            this(DateUtil.of(startYear, startMonth), NOW, title, description);
         }
 
-        public Position(int startYear, Month startMonth,int endYear, Month endMonth,String title,String description){
-            this(DateUtil.of(startYear,startMonth),DateUtil.of(endYear,endMonth), title,description);
+        public Position(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
+            this(DateUtil.of(startYear, startMonth), DateUtil.of(endYear, endMonth), title, description);
         }
 
         public Position(LocalDate startDate, LocalDate endDate, String title, String description) {
-            Objects.requireNonNull(startDate,"startDate must not be null");
+            Objects.requireNonNull(startDate, "startDate must not be null");
             Objects.requireNonNull(endDate, "endDate must not be null");
             Objects.requireNonNull(title, "title must not be null");
             this.startDate = startDate;

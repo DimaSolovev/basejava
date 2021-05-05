@@ -3,6 +3,7 @@ package com.urise.webapp.storage.serializer;
 import com.urise.webapp.model.*;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,14 +50,21 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case ("EXPERIENCE"):
                     case ("EDUCATION"):
-                        OrganizationSection organizationSection = (OrganizationSection) entry.getValue();
+                        OrganizationSection organizationSection = (OrganizationSection) entry.getValue();//организация
                         List<Organization> listOrg = organizationSection.getOrganizations();//список организаций
                         dos.writeInt(listOrg.size());//размер списка организаций
-                        for (Organization org : listOrg){ //проходим по списку организаций
+                        for (Organization org : listOrg) { //проходим по списку организаций
+                            dos.writeUTF(org.getHomePage().getName());
+                            dos.writeUTF(org.getHomePage().getUrl());
                             List<Organization.Position> listPos = org.getPositions();//получаем список позиций в каждой организации
                             dos.writeInt(listPos.size());//размер списка позиций
                             for (Organization.Position op : listPos) {//проходим по списку позиций
-                                dos.writeInt(op.getStartDate());
+                                dos.writeInt(op.getStartDate().getYear());
+                                dos.writeInt(op.getStartDate().getMonth().getValue());
+                                dos.writeInt(op.getEndDate().getYear());
+                                dos.writeInt(op.getEndDate().getMonth().getValue());
+                                dos.writeUTF(op.getTitle());
+                                dos.writeUTF(op.getDescription());
                             }
                         }
                         break;
@@ -78,8 +86,8 @@ public class DataStreamSerializer implements StreamSerializer {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
             String section = null;
-            while (dis.available()>0){
-                switch ( section = dis.readUTF()) {
+            while (dis.available() > 0) {
+                switch (section = dis.readUTF()) {
                     case ("OBJECTIVE"):
                     case ("PERSONAL"):
                         resume.addSection(SectionType.valueOf(section), new TextSection(dis.readUTF()));
@@ -95,6 +103,24 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case ("EXPERIENCE"):
                     case ("EDUCATION"):
+                        int orgSize = dis.readInt();
+                        List<Organization> organizations = new ArrayList<>();
+
+                        for (int i = 0; i < orgSize; i++) {
+                            Link link = new Link(dis.readUTF(),dis.readUTF());
+                            int positionSize = dis.readInt();
+                            List<Organization.Position> positions = new ArrayList<>();
+
+                            for (int j = 0; j < positionSize; j++) {
+                                LocalDate startDate = LocalDate.of(dis.readInt(),dis.readInt(),1);
+                                LocalDate endDate = LocalDate.of(dis.readInt(),dis.readInt(),1);
+                                String title = dis.readUTF();
+                                String description = dis.readUTF();
+                                positions.add(new Organization.Position(startDate,endDate,title, description));
+                            }
+                            organizations.add(new Organization(link,positions));
+                        }
+                        resume.addSection(SectionType.valueOf(section), new OrganizationSection(organizations));
                         break;
                 }
             }
