@@ -50,6 +50,7 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case ("EXPERIENCE"):
                     case ("EDUCATION"):
+                        dos.writeUTF(entry.getKey().name());
                         OrganizationSection organizationSection = (OrganizationSection) entry.getValue();//организация
                         List<Organization> listOrg = organizationSection.getOrganizations();//список организаций
                         dos.writeInt(listOrg.size());//размер списка организаций
@@ -85,7 +86,7 @@ public class DataStreamSerializer implements StreamSerializer {
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-            String section = null;
+            String section;
             while (dis.available() > 0) {
                 switch (section = dis.readUTF()) {
                     case ("OBJECTIVE"):
@@ -104,21 +105,24 @@ public class DataStreamSerializer implements StreamSerializer {
                     case ("EXPERIENCE"):
                     case ("EDUCATION"):
                         int orgSize = dis.readInt();
+                        System.out.println(orgSize);
                         List<Organization> organizations = new ArrayList<>();
 
                         for (int i = 0; i < orgSize; i++) {
-                            Link link = new Link(dis.readUTF(),dis.readUTF());
+                            Link link = new Link(dis.readUTF(), dis.readUTF());
                             int positionSize = dis.readInt();
                             List<Organization.Position> positions = new ArrayList<>();
 
                             for (int j = 0; j < positionSize; j++) {
-                                LocalDate startDate = LocalDate.of(dis.readInt(),dis.readInt(),1);
-                                LocalDate endDate = LocalDate.of(dis.readInt(),dis.readInt(),1);
+                                LocalDate startDate = LocalDate.of(dis.readInt(), dis.readInt(), 1);
+                                LocalDate endDate = LocalDate.of(dis.readInt(), dis.readInt(), 1);
                                 String title = dis.readUTF();
+                                //System.out.println(title);
                                 String description = dis.readUTF();
-                                positions.add(new Organization.Position(startDate,endDate,title, description));
+                                //System.out.println(description);
+                                positions.add(new Organization.Position(startDate, endDate, title, description));
                             }
-                            organizations.add(new Organization(link,positions));
+                            organizations.add(new Organization(link, positions));
                         }
                         resume.addSection(SectionType.valueOf(section), new OrganizationSection(organizations));
                         break;
