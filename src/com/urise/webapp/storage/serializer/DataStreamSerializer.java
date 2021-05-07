@@ -26,17 +26,18 @@ public class DataStreamSerializer implements StreamSerializer {
             Map<SectionType, Section> sections = r.getSections();
 
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
-                switch (entry.getKey().name()) {
+                String sectionName = entry.getKey().name();
+                switch (sectionName) {
                     case ("OBJECTIVE"):
                     case ("PERSONAL"):
-                        dos.writeUTF(entry.getKey().name());
+                        dos.writeUTF(sectionName);
                         dos.writeUTF(String.valueOf(entry.getValue()));
                         break;
                     case ("ACHIEVEMENT"):
                     case ("QUALIFICATIONS"):
                         ListSection listSection = (ListSection) entry.getValue();
                         List<String> list = listSection.getItems();
-                        dos.writeUTF(entry.getKey().name());
+                        dos.writeUTF(sectionName);
                         dos.writeInt(list.size());
                         for (String s : list) {
                             dos.writeUTF(s);
@@ -44,13 +45,14 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case ("EXPERIENCE"):
                     case ("EDUCATION"):
-                        dos.writeUTF(entry.getKey().name());
+                        dos.writeUTF(sectionName);
                         OrganizationSection organizationSection = (OrganizationSection) entry.getValue();//организация
                         List<Organization> listOrg = organizationSection.getOrganizations();//список организаций
                         dos.writeInt(listOrg.size());//размер списка организаций
                         for (Organization org : listOrg) { //проходим по списку организаций
-                            dos.writeUTF(org.getHomePage().getName());
-                            dos.writeUTF(org.getHomePage().getUrl());
+                            Link homePage = org.getHomePage();
+                            dos.writeUTF(homePage.getName());
+                            dos.writeUTF(homePage.getUrl());
                             List<Organization.Position> listPos = org.getPositions();//получаем список позиций в каждой организации
                             dos.writeInt(listPos.size());//размер списка позиций
                             for (Organization.Position op : listPos) {//проходим по списку позиций
