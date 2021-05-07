@@ -85,24 +85,25 @@ public class DataStreamSerializer implements StreamSerializer {
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-            String section;
+            SectionType type;
             while (dis.available() > 0) {
-                switch (section = dis.readUTF()) {
-                    case ("OBJECTIVE"):
-                    case ("PERSONAL"):
-                        resume.addSection(SectionType.valueOf(section), new TextSection(dis.readUTF()));
+                type = SectionType.valueOf(dis.readUTF());
+                switch (type) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        resume.addSection(type, new TextSection(dis.readUTF()));
                         break;
-                    case ("ACHIEVEMENT"):
-                    case ("QUALIFICATIONS"):
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
                         int listSize = dis.readInt();
                         List<String> list = new ArrayList<>();
                         for (int i = 0; i < listSize; i++) {
                             list.add(dis.readUTF());
                         }
-                        resume.addSection(SectionType.valueOf(section), new ListSection(list));
+                        resume.addSection(type, new ListSection(list));
                         break;
-                    case ("EXPERIENCE"):
-                    case ("EDUCATION"):
+                    case EXPERIENCE:
+                    case EDUCATION:
                         int orgSize = dis.readInt();
                         System.out.println(orgSize);
                         List<Organization> organizations = new ArrayList<>();
@@ -121,7 +122,7 @@ public class DataStreamSerializer implements StreamSerializer {
                             }
                             organizations.add(new Organization(link, positions));
                         }
-                        resume.addSection(SectionType.valueOf(section), new OrganizationSection(organizations));
+                        resume.addSection(type, new OrganizationSection(organizations));
                         break;
                 }
             }
