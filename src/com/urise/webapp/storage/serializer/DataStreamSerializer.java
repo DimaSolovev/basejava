@@ -25,12 +25,6 @@ public class DataStreamSerializer implements StreamSerializer {
 
             Map<SectionType, Section> sections = r.getSections();
 
-//            List<SectionType> types = new ArrayList<>(sections.keySet());
-//            dos.writeInt(types.size());
-//            for (SectionType type : types) {
-//                dos.writeUTF(type.name());
-//            }
-
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
                 switch (entry.getKey().name()) {
                     case ("OBJECTIVE"):
@@ -60,10 +54,8 @@ public class DataStreamSerializer implements StreamSerializer {
                             List<Organization.Position> listPos = org.getPositions();//получаем список позиций в каждой организации
                             dos.writeInt(listPos.size());//размер списка позиций
                             for (Organization.Position op : listPos) {//проходим по списку позиций
-                                dos.writeInt(op.getStartDate().getYear());
-                                dos.writeInt(op.getStartDate().getMonth().getValue());
-                                dos.writeInt(op.getEndDate().getYear());
-                                dos.writeInt(op.getEndDate().getMonth().getValue());
+                                writeDate(dos, op.getStartDate());
+                                writeDate(dos, op.getEndDate());
                                 dos.writeUTF(op.getTitle());
                                 dos.writeUTF(op.getDescription());
                             }
@@ -71,8 +63,12 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                 }
             }
-            // TODO implements sections
         }
+    }
+
+    private void writeDate(DataOutputStream dos, LocalDate startDate) throws IOException {
+        dos.writeInt(startDate.getYear());
+        dos.writeInt(startDate.getMonth().getValue());
     }
 
     @Override
@@ -114,12 +110,10 @@ public class DataStreamSerializer implements StreamSerializer {
                             List<Organization.Position> positions = new ArrayList<>();
 
                             for (int j = 0; j < positionSize; j++) {
-                                LocalDate startDate = LocalDate.of(dis.readInt(), dis.readInt(), 1);
-                                LocalDate endDate = LocalDate.of(dis.readInt(), dis.readInt(), 1);
+                                LocalDate startDate = readDate(dis);
+                                LocalDate endDate = readDate(dis);
                                 String title = dis.readUTF();
-                                //System.out.println(title);
                                 String description = dis.readUTF();
-                                //System.out.println(description);
                                 positions.add(new Organization.Position(startDate, endDate, title, description));
                             }
                             organizations.add(new Organization(link, positions));
@@ -128,8 +122,11 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                 }
             }
-            // TODO implements sections
             return resume;
         }
+    }
+
+    private LocalDate readDate(DataInputStream dis) throws IOException {
+        return LocalDate.of(dis.readInt(), dis.readInt(), 1);
     }
 }
