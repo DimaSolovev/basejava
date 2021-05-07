@@ -26,15 +26,16 @@ public class DataStreamSerializer implements StreamSerializer {
             Map<SectionType, Section> sections = r.getSections();
 
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
+                SectionType type = entry.getKey();
                 String sectionName = entry.getKey().name();
-                switch (sectionName) {
-                    case ("OBJECTIVE"):
-                    case ("PERSONAL"):
+                switch (type) {
+                    case OBJECTIVE:
+                    case PERSONAL:
                         dos.writeUTF(sectionName);
-                        dos.writeUTF(String.valueOf(entry.getValue()));
+                        dos.writeUTF(((TextSection) entry.getValue()).getContent());
                         break;
-                    case ("ACHIEVEMENT"):
-                    case ("QUALIFICATIONS"):
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
                         ListSection listSection = (ListSection) entry.getValue();
                         List<String> list = listSection.getItems();
                         dos.writeUTF(sectionName);
@@ -43,8 +44,8 @@ public class DataStreamSerializer implements StreamSerializer {
                             dos.writeUTF(s);
                         }
                         break;
-                    case ("EXPERIENCE"):
-                    case ("EDUCATION"):
+                    case EXPERIENCE:
+                    case EDUCATION:
                         dos.writeUTF(sectionName);
                         OrganizationSection organizationSection = (OrganizationSection) entry.getValue();//организация
                         List<Organization> listOrg = organizationSection.getOrganizations();//список организаций
