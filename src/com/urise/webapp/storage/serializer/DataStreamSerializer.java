@@ -69,6 +69,7 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
+
     private void writeDate(DataOutputStream dos, LocalDate startDate) throws IOException {
         dos.writeInt(startDate.getYear());
         dos.writeInt(startDate.getMonth().getValue());
