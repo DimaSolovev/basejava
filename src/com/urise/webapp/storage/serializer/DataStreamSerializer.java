@@ -101,6 +101,7 @@ public class DataStreamSerializer implements StreamSerializer {
                         for (int i = 0; i < listSize; i++) {
                             list.add(dis.readUTF());
                         }
+
                         resume.addSection(type, new ListSection(list));
                         break;
                     case EXPERIENCE:
