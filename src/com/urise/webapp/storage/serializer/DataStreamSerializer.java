@@ -5,6 +5,7 @@ import com.urise.webapp.model.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +18,10 @@ public class DataStreamSerializer implements StreamSerializer {
             dos.writeUTF(r.getFullName());
 
             Map<ContactType, String> contacts = r.getContacts();
-            dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+            writeWithEx(contacts.entrySet(), dos, entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
+            });
 
             Map<SectionType, Section> sections = r.getSections();
             dos.writeInt(sections.size());
@@ -38,39 +38,26 @@ public class DataStreamSerializer implements StreamSerializer {
                     case QUALIFICATIONS:
                         ListSection listSection = (ListSection) entry.getValue();
                         List<String> list = listSection.getItems();
-                        dos.writeInt(list.size());
-                        for (String s : list) {
-                            dos.writeUTF(s);
-                        }
+                        writeWithEx(list, dos, dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
                         OrganizationSection organizationSection = (OrganizationSection) entry.getValue();//организация
                         List<Organization> listOrg = organizationSection.getOrganizations();//список организаций
-                        dos.writeInt(listOrg.size());//размер списка организаций
-                        for (Organization org : listOrg) { //проходим по списку организаций
-                            Link homePage = org.getHomePage();
-                            dos.writeUTF(homePage.getName());
-                            dos.writeUTF(homePage.getUrl());
-                            List<Organization.Position> listPos = org.getPositions();//получаем список позиций в каждой организации
-                            dos.writeInt(listPos.size());//размер списка позиций
-                            for (Organization.Position op : listPos) {//проходим по списку позиций
-                                writeDate(dos, op.getStartDate());
-                                writeDate(dos, op.getEndDate());
-                                dos.writeUTF(op.getTitle());
-                                dos.writeUTF(op.getDescription());
-                            }
-                        }
+                        writeWithEx(listOrg, dos, (org) -> {
+                            dos.writeUTF(org.getHomePage().getName());
+                            dos.writeUTF(org.getHomePage().getUrl());
+                            writeWithEx(org.getPositions(), dos, (pos) -> {
+                                writeDate(dos, pos.getStartDate());
+                                writeDate(dos, pos.getEndDate());
+                                dos.writeUTF(pos.getTitle());
+                                dos.writeUTF(pos.getDescription());
+                            });
+                        });
                         break;
                 }
             }
         }
-    }
-
-
-    private void writeDate(DataOutputStream dos, LocalDate startDate) throws IOException {
-        dos.writeInt(startDate.getYear());
-        dos.writeInt(startDate.getMonth().getValue());
     }
 
     @Override
@@ -131,7 +118,23 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
+    private void writeDate(DataOutputStream dos, LocalDate startDate) throws IOException {
+        dos.writeInt(startDate.getYear());
+        dos.writeInt(startDate.getMonth().getValue());
+    }
+
     private LocalDate readDate(DataInputStream dis) throws IOException {
         return LocalDate.of(dis.readInt(), dis.readInt(), 1);
     }
+
+    private <T> void writeWithEx(Collection<T> col, DataOutputStream dos, Write<T> writer) throws IOException {
+        dos.writeInt(col.size());
+        for (T t : col) {
+            writer.writeElement(t);
+        }
+    }
+}
+
+interface Write<T> {
+    public void writeElement(T t) throws IOException;
 }
