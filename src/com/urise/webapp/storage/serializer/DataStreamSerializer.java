@@ -36,15 +36,11 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        ListSection listSection = (ListSection) entry.getValue();
-                        List<String> list = listSection.getItems();
-                        writeWithEx(list, dos, dos::writeUTF);
+                        writeWithEx(((ListSection) entry.getValue()).getItems(), dos, dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        OrganizationSection organizationSection = (OrganizationSection) entry.getValue();//организация
-                        List<Organization> listOrg = organizationSection.getOrganizations();//список организаций
-                        writeWithEx(listOrg, dos, (org) -> {
+                        writeWithEx(((OrganizationSection) entry.getValue()).getOrganizations(), dos, (org) -> {
                             dos.writeUTF(org.getHomePage().getName());
                             dos.writeUTF(org.getHomePage().getUrl());
                             writeWithEx(org.getPositions(), dos, (pos) -> {
@@ -136,5 +132,5 @@ public class DataStreamSerializer implements StreamSerializer {
 }
 
 interface Write<T> {
-    public void writeElement(T t) throws IOException;
+    void writeElement(T t) throws IOException;
 }
