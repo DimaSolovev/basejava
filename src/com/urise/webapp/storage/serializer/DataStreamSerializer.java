@@ -6,7 +6,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
-public class DataStreamSerializer<T> implements StreamSerializer {
+public class DataStreamSerializer implements StreamSerializer {
 
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
@@ -59,9 +59,7 @@ public class DataStreamSerializer<T> implements StreamSerializer {
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
 
-            readWithEx(dis, () -> {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            });
+            readWithEx(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
 
             readWithEx(dis, () -> {
                 SectionType type = SectionType.valueOf(dis.readUTF());
@@ -73,9 +71,7 @@ public class DataStreamSerializer<T> implements StreamSerializer {
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         List<String> list = new ArrayList<>();
-                        readWithEx(dis, () -> {
-                            list.add(dis.readUTF());
-                        });
+                        readWithEx(dis, () -> list.add(dis.readUTF()));
                         resume.addSection(type, new ListSection(list));
                         break;
                     case EXPERIENCE:
@@ -119,7 +115,7 @@ public class DataStreamSerializer<T> implements StreamSerializer {
         }
     }
 
-    private void readWithEx(DataInputStream dis, Read<T> reader) throws IOException {
+    private void readWithEx(DataInputStream dis, Read reader) throws IOException {
         int positionSize = dis.readInt();
         for (int i = 0; i < positionSize; i++) {
             reader.readElement();
