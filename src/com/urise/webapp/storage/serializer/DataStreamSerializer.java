@@ -21,10 +21,10 @@ public class DataStreamSerializer implements StreamSerializer {
             });
 
             Map<SectionType, Section> sections = r.getSections();
-            writeWithEx(sections.keySet(), dos, (sec) -> {
-                for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
+            writeWithEx(sections.entrySet(), dos, (entry) -> {
+                //for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
                     SectionType type = entry.getKey();
-                    dos.writeUTF(entry.getKey().name());
+                    dos.writeUTF(type.name());
                     switch (type) {
                         case OBJECTIVE:
                         case PERSONAL:
@@ -37,8 +37,9 @@ public class DataStreamSerializer implements StreamSerializer {
                         case EXPERIENCE:
                         case EDUCATION:
                             writeWithEx(((OrganizationSection) entry.getValue()).getOrganizations(), dos, (org) -> {
-                                dos.writeUTF(org.getHomePage().getName());
-                                dos.writeUTF(org.getHomePage().getUrl());
+                                Link homePage = org.getHomePage();
+                                dos.writeUTF(homePage.getName());
+                                dos.writeUTF(homePage.getUrl());
                                 writeWithEx(org.getPositions(), dos, (pos) -> {
                                     writeDate(dos, pos.getStartDate());
                                     writeDate(dos, pos.getEndDate());
@@ -48,7 +49,7 @@ public class DataStreamSerializer implements StreamSerializer {
                             });
                             break;
                     }
-                }
+                //}
             });
         }
     }
