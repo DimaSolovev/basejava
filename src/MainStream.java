@@ -6,7 +6,7 @@ public class MainStream {
 
     public static int minValue(int[] values) {
 
-        String number = Arrays.stream(values).distinct().sorted().mapToObj(x->String.valueOf(x)).reduce((x,y)->x+y).get();
+        String number = Arrays.stream(values).distinct().sorted().mapToObj(x -> String.valueOf(x)).reduce((x, y) -> x + y).get();
         int min = Integer.valueOf(number);
         return min;
     }
