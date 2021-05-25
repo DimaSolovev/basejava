@@ -6,9 +6,8 @@ public class MainStream {
 
     public static int minValue(int[] values) {
 
-        String number = Arrays.stream(values).distinct().sorted().mapToObj(x -> String.valueOf(x)).reduce((x, y) -> x + y).get();
-        int min = Integer.valueOf(number);
-        return min;
+        String number = Arrays.stream(values).distinct().sorted().mapToObj(String::valueOf).reduce((x, y) -> x + y).get();
+        return Integer.parseInt(number);
     }
 
     public static List<Integer> oddOrEven(List<Integer> integers) {
@@ -26,18 +25,5 @@ public class MainStream {
 
     public static void main(String[] args) {
 
-        int[] arr = {1, 2, 3, 4, 5};
-        int min = minValue(arr);
-        System.out.println(min);
-
-
-//        List<Integer> list = new ArrayList<>();
-//        list.add(1);
-//        list.add(2);
-//        list.add(3);
-//        list.add(4);
-//        list.add(5);
-//        List<Integer> list1 = oddOrEven(list);
-//        System.out.println(list1);
     }
 }
