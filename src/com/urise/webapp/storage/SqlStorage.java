@@ -4,6 +4,7 @@ import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.sql.ConnectionFactory;
+import com.urise.webapp.sql.SqlHelper;
 
 import java.io.IOException;
 import java.sql.*;
@@ -13,6 +14,7 @@ import java.util.List;
 public class SqlStorage implements Storage {
 
     public final ConnectionFactory connectionFactory;
+    private SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
         connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
