@@ -1,19 +1,27 @@
 package com.urise.webapp.sql;
 
+import com.urise.webapp.exeption.StorageException;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class SqlHelper {
 
     public ConnectionFactory connectionFactory;
 
-    public void execute(String sql){
+    public SqlHelper(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
 
+    public <T> T execute(String sql, Ex<T> ex) {
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            return ex.execute(ps);
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
     }
 
 }
-//try (Connection conn = connectionFactory.getConnection();
-//        PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
-//        ps.setString(1, r.getUuid());
-//        ps.setString(2, r.getFullName());
-//        ps.execute();
-//        } catch (SQLException e) {
-//        throw new StorageException(e);
-//        }
+

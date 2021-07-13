@@ -89,7 +89,7 @@ public class SqlStorage implements Storage {
             while (rs.next()) {
                 String resumeUuid = rs.getString("uuid");
                 String resumeName = rs.getString("full_name");
-                list.add(new Resume(resumeUuid,resumeName));
+                list.add(new Resume(resumeUuid, resumeName));
             }
             return list;
         } catch (SQLException e) {
@@ -103,7 +103,7 @@ public class SqlStorage implements Storage {
              PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM resume")) {
             ResultSet rs = ps.executeQuery();
             int size = 0;
-            if(rs.next()) {
+            if (rs.next()) {
                 size = rs.getInt(1);
             }
             return size;
