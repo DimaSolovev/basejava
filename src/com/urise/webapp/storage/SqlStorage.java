@@ -12,11 +12,9 @@ import java.util.List;
 
 public class SqlStorage implements Storage {
 
-    //public final ConnectionFactory connectionFactory;
     private SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        //connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
         sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
@@ -86,4 +84,5 @@ public class SqlStorage implements Storage {
             return size;
         });
     }
+
 }
