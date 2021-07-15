@@ -23,6 +23,7 @@ public class SqlStorage implements Storage {
         sqlHelper.execute("UPDATE resume SET full_name=? WHERE uuid=?", ps -> {
             ps.setString(1, resume.getFullName());
             ps.setString(2, resume.getUuid());
+            ps.executeUpdate();
             return null;
         });
     }
@@ -32,6 +33,7 @@ public class SqlStorage implements Storage {
         sqlHelper.execute("INSERT INTO resume (uuid, full_name) VALUES (?,?)", ps -> {
             ps.setString(1, r.getUuid());
             ps.setString(2, r.getFullName());
+            ps.executeUpdate();
             return null;
         });
     }
@@ -52,6 +54,7 @@ public class SqlStorage implements Storage {
     public void delete(String uuid) {
         sqlHelper.execute("DELETE FROM resume r WHERE r.uuid=?", ps -> {
             ps.setString(1, uuid);
+            ps.execute();
             return null;
         });
     }
