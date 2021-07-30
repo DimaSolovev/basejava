@@ -22,22 +22,21 @@ public class SqlStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
+        String resumeUuid = resume.getUuid();
         sqlHelper.transactionalExecute(conn -> {
             try (PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name = ? WHERE uuid = ?")) {
                 ps.setString(1, resume.getFullName());
-                ps.setString(2, resume.getUuid());
+                ps.setString(2, resumeUuid);
                 if (ps.executeUpdate() != 1) {
-                    throw new NotExistStorageException(resume.getUuid());
+                    throw new NotExistStorageException(resumeUuid);
                 }
             }
-
-            sqlHelper.execute("DELETE  FROM contact WHERE resume_uuid=?", ps -> {
-                ps.setString(1, resume.getUuid());
+            try (PreparedStatement ps = conn.prepareStatement("DELETE  FROM contact WHERE resume_uuid=?")) {
+                ps.setString(1, resumeUuid);
                 ps.execute();
-                return null;
-            });
-
-            return insertContacts(resume, conn);
+            }
+            insertContacts(resume, conn);
+            return null;
         });
     }
 
@@ -49,7 +48,8 @@ public class SqlStorage implements Storage {
                         ps.setString(2, r.getFullName());
                         ps.execute();
                     }
-                    return insertContacts(r, conn);
+                    insertContacts(r, conn);
+                    return null;
                 }
         );
     }
@@ -115,8 +115,9 @@ public class SqlStorage implements Storage {
 
     private void addContact(ResultSet rs, Resume resume) throws SQLException {
         String value = rs.getString("value");
-        ContactType type = ContactType.valueOf(rs.getString("type"));
-        resume.addContact(type, value);
+        if (value != null) {
+            resume.addContact(ContactType.valueOf(rs.getString("type")), value);
+        }
     }
 
     private Object insertContacts(Resume r, Connection conn) throws SQLException {
