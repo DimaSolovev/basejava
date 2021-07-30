@@ -120,7 +120,7 @@ public class SqlStorage implements Storage {
         }
     }
 
-    private Object insertContacts(Resume r, Connection conn) throws SQLException {
+    private void insertContacts(Resume r, Connection conn) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
             for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
                 ps.setString(1, r.getUuid());
@@ -130,7 +130,6 @@ public class SqlStorage implements Storage {
             }
             ps.executeBatch();
         }
-        return null;
     }
 
 }
