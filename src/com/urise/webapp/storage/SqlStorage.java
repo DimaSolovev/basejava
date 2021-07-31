@@ -8,7 +8,6 @@ import com.urise.webapp.sql.SqlHelper;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,19 +88,24 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() throws IOException {
-        return sqlHelper.execute("SELECT * FROM resume r LEFT JOIN contact c ON r.uuid = c.resume_uuid ORDER by full_name, uuid", ps -> {
+        return sqlHelper.execute("SELECT * FROM resume ORDER by full_name, uuid", ps -> {
             ResultSet rs = ps.executeQuery();
-            Map<String, Resume> resumes = new LinkedHashMap<>();
+            List<Resume> resumes = new ArrayList<>();
             while (rs.next()) {
-                String uuid = rs.getString("uuid");
-                Resume resume = resumes.get(uuid);
-                if (resume == null) {
-                    resume = new Resume(uuid, rs.getString("full_name"));
-                    resumes.put(uuid, resume);
-                }
-                addContact(rs, resume);
+                resumes.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
             }
-            return new ArrayList<>(resumes.values());
+            sqlHelper.execute("SELECT * FROM contact ORDER by resume_uuid", preparedStatement -> {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    for (Resume resume : resumes) {
+                        if (resultSet.getString("resume_uuid").equals(resume.getUuid())) {
+                            addContact(resultSet, resume);
+                        }
+                    }
+                }
+                return null;
+            });
+            return resumes;
         });
     }
 
