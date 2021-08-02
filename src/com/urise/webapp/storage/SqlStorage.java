@@ -53,40 +53,47 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-//        return sqlHelper.execute("SELECT * FROM resume r LEFT JOIN contact c ON r.uuid = c.resume_uuid WHERE r.uuid =?", ps -> {
-//            ps.setString(1, uuid);
-//            ResultSet rs = ps.executeQuery();
-//            if (!rs.next()) {
-//                throw new NotExistStorageException(uuid);
-//            }
-//            Resume resume = new Resume(uuid, rs.getString("full_name"));
-//            do {
-//                addContact(rs, resume);
-//            } while (rs.next());
-//
-//            return resume;
-//        });
-        Resume resume ;
-        sqlHelper.transactionalExecute(conn -> {
-
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r WHERE r.uuid =?")) {
-                ps.setString(1, uuid);
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    resume = new Resume(rs.getString("uuid"), rs.getString("full_name"));
-                }
+        return sqlHelper.execute("SELECT * FROM resume r LEFT JOIN contact c ON r.uuid = c.resume_uuid WHERE r.uuid =?", ps -> {
+            ps.setString(1, uuid);
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) {
+                throw new NotExistStorageException(uuid);
             }
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact c WHERE c.resume_uuid =?")) {
-                ps.setString(1, uuid);
-                ResultSet rs = ps.executeQuery();
-                String value = rs.getString("value");
-                if (value != null) {
-                    resume.addContact(ContactType.valueOf(rs.getString("type")), value);
+            Resume resume = new Resume(uuid, rs.getString("full_name"));
+            do {
+                addContact(rs, resume);
+            } while (rs.next());
+            sqlHelper.transactionalExecute(conn -> {
+                try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM sections s WHERE s.resume_uuid =?")) {
+                    preparedStatement.setString(1, uuid);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        addSection(resultSet, resume);
+                    }
                 }
-            }
+                return null;
+            });
             return resume;
         });
-        return re;
+//        Resume resume = null;
+//        sqlHelper.transactionalExecute(conn -> {
+//
+//            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r WHERE r.uuid =?")) {
+//                ps.setString(1, uuid);
+//                ResultSet rs = ps.executeQuery();
+//                resume = new Resume(rs.getString("uuid"), rs.getString("full_name"));
+//
+//            }
+//            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact c WHERE c.resume_uuid =?")) {
+//                ps.setString(1, uuid);
+//                ResultSet rs = ps.executeQuery();
+//                String value = rs.getString("value");
+//                if (value != null) {
+//                    resume.addContact(ContactType.valueOf(rs.getString("type")), value);
+//                }
+//            }
+//            return resume;
+//        });
     }
 
     @Override
