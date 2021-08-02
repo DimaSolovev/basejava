@@ -154,7 +154,7 @@ public class SqlStorage implements Storage {
                 section = new TextSection(rs.getString("content"));
             } else {
                 List<String> sectionList = new ArrayList<>();
-                String[] arr = content.split(" ");
+                String[] arr = content.split("\n");
                 sectionList.addAll(Arrays.asList(arr));
                 section = new ListSection(sectionList);
             }
@@ -189,8 +189,8 @@ public class SqlStorage implements Storage {
                     ListSection listSection = (ListSection) e.getValue();
                     String con = new String("");
                     for (String s : listSection.getItems()) {
-                        //  con = con + "\\n";
-                        con = con + " ";
+                          con = con + "\n";
+                        //con = con + " ";
                     }
                     ps.setString(3, con);
                 }
