@@ -36,7 +36,7 @@ public class SqlStorage implements Storage {
                 ps.setString(1, resumeUuid);
                 ps.execute();
             }
-            insertSections(resume,conn);
+            insertSections(resume, conn);
             return null;
         });
     }
@@ -187,12 +187,12 @@ public class SqlStorage implements Storage {
                     ps.setString(3, textSection.getContent());
                 } else {
                     ListSection listSection = (ListSection) e.getValue();
-                    String con = new String("");
+                    StringBuilder con = new StringBuilder(new String());
                     for (String s : listSection.getItems()) {
-                          con = con + "\n";
-                        //con = con + " ";
+                        con.append(s);
+                        con.append("\n");
                     }
-                    ps.setString(3, con);
+                    ps.setString(3, con.toString().trim());
                 }
                 ps.addBatch();
             }
