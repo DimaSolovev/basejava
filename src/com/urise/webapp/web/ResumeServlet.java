@@ -21,10 +21,10 @@ public class ResumeServlet extends HttpServlet {
 //        String name = request.getParameter("name");
 //        response.getWriter().write(name == null ? "Hello Resumes!" : "Hello " + name + '!');
 
-        List<Resume> resumeList = new SqlStorage("jdbc:postgresql://localhost:5432/resumes","postgres","postgres").getAllSorted();
-        request.setAttribute("resumes",resumeList);
+        List<Resume> resumeList = new SqlStorage("jdbc:postgresql://localhost:5432/resumes", "postgres", "postgres").getAllSorted();
+        request.setAttribute("resumes", resumeList);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("resume.jsp");
-        requestDispatcher.forward(request,response);
+        requestDispatcher.forward(request, response);
     }
 
     @Override
