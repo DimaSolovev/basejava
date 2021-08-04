@@ -64,28 +64,6 @@ public class SqlStorage implements Storage {
     @Override
     public Resume get(String uuid) {
 
-//        return sqlHelper.execute("SELECT * FROM resume r LEFT JOIN contact c ON r.uuid = c.resume_uuid WHERE r.uuid =?", ps -> {
-//            ps.setString(1, uuid);
-//            ResultSet rs = ps.executeQuery();
-//            if (!rs.next()) {
-//                throw new NotExistStorageException(uuid);
-//            }
-//            Resume resume = new Resume(uuid, rs.getString("full_name"));
-//            do {
-//                addContact(rs, resume);
-//            } while (rs.next());
-//            sqlHelper.transactionalExecute(conn -> {
-//                try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM section s WHERE s.resume_uuid =?")) {
-//                    preparedStatement.setString(1, uuid);
-//                    ResultSet resultSet = preparedStatement.executeQuery();
-//                    while (resultSet.next()) {
-//                        addSection(resultSet, resume);
-//                    }
-//                }
-//                return null;
-//            });
-//            return resume;
-//        });
         return sqlHelper.transactionalExecute(conn -> {
             Resume resume = null;
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r LEFT JOIN contact c ON r.uuid = c.resume_uuid WHERE r.uuid =?")) {
@@ -175,15 +153,18 @@ public class SqlStorage implements Storage {
     private void addSection(ResultSet rs, Resume r) throws SQLException {
         SectionType type = SectionType.valueOf(rs.getString("type"));
         String content = rs.getString("value");
+
         if (content != null) {
             Section section = null;
-            if (type == SectionType.PERSONAL || type == SectionType.OBJECTIVE) {
-                section = new TextSection(rs.getString("value"));
-            } else {
-                List<String> sectionList = new ArrayList<>();
-                String[] arr = content.split("\n");
-                sectionList.addAll(Arrays.asList(arr));
-                section = new ListSection(sectionList);
+            switch (type) {
+                case PERSONAL:
+                case OBJECTIVE:
+                    section = new TextSection(rs.getString("value"));
+                    break;
+                case ACHIEVEMENT:
+                case QUALIFICATIONS:
+                    section = new ListSection(Arrays.asList(content.split("\n")));
+                    break;
             }
             r.addSection(type, section);
         }
