@@ -37,7 +37,7 @@ public class SqlStorage implements Storage {
                 ps.execute();
             }
             insertContacts(resume, conn);
-            try (PreparedStatement ps = conn.prepareStatement("DELETE  FROM sections WHERE resume_uuid=?")) {
+            try (PreparedStatement ps = conn.prepareStatement("DELETE  FROM section WHERE resume_uuid=?")) {
                 ps.setString(1, resumeUuid);
                 ps.execute();
             }
@@ -75,7 +75,7 @@ public class SqlStorage implements Storage {
                 addContact(rs, resume);
             } while (rs.next());
             sqlHelper.transactionalExecute(conn -> {
-                try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM sections s WHERE s.resume_uuid =?")) {
+                try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM section s WHERE s.resume_uuid =?")) {
                     preparedStatement.setString(1, uuid);
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
@@ -123,7 +123,7 @@ public class SqlStorage implements Storage {
                     addContact(rs, resume);
                 }
             }
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM sections")) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     Resume resume = resumes.get(rs.getString("resume_uuid"));
@@ -152,11 +152,11 @@ public class SqlStorage implements Storage {
 
     private void addSection(ResultSet rs, Resume r) throws SQLException {
         SectionType type = SectionType.valueOf(rs.getString("type"));
-        String content = rs.getString("content");
+        String content = rs.getString("value");
         if (content != null) {
             Section section = null;
             if (type == SectionType.PERSONAL || type == SectionType.OBJECTIVE) {
-                section = new TextSection(rs.getString("content"));
+                section = new TextSection(rs.getString("value"));
             } else {
                 List<String> sectionList = new ArrayList<>();
                 String[] arr = content.split("\n");
@@ -180,7 +180,7 @@ public class SqlStorage implements Storage {
     }
 
     private void insertSections(Resume r, Connection conn) throws SQLException {
-        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO sections (resume_uuid, type, content) VALUES (?,?,?)")) {
+        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (resume_uuid, type, value) VALUES (?,?,?)")) {
             for (Map.Entry<SectionType, Section> e : r.getSections().entrySet()) {
 
                 SectionType sectionType = e.getKey();

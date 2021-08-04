@@ -14,13 +14,13 @@ CREATE TABLE contact (
 CREATE UNIQUE INDEX contact_uuid_type_index
     ON contact (resume_uuid, type);
 
-CREATE TABLE sections (
+CREATE TABLE section (
                          id          SERIAL,
                          resume_uuid CHAR(36) NOT NULL REFERENCES resume (uuid) ON DELETE CASCADE,
                          type        TEXT     NOT NULL,
-                         content     TEXT     NOT NULL
+                         value     TEXT     NOT NULL
 );
 
 CREATE UNIQUE INDEX section_index
-    ON sections (resume_uuid, type);
+    ON section (resume_uuid, type);
 
