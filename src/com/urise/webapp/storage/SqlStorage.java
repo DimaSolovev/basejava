@@ -107,8 +107,8 @@ public class SqlStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() throws IOException {
 
-        Map<String, Resume> resumes = new LinkedHashMap<>();
-        sqlHelper.transactionalExecute(conn -> {
+        return sqlHelper.transactionalExecute(conn -> {
+            Map<String, Resume> resumes = new LinkedHashMap<>();
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ORDER BY full_name")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
@@ -130,9 +130,8 @@ public class SqlStorage implements Storage {
                     addSection(rs, resume);
                 }
             }
-            return null;
+            return new ArrayList<>(resumes.values());
         });
-        return new ArrayList<>(resumes.values());
     }
 
     @Override
