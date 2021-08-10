@@ -1,4 +1,5 @@
 <%@ page import="com.urise.webapp.model.ContactType" %>
+<%@ page import="java.util.UUID" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -28,6 +29,9 @@
             </tr>
         </c:forEach>
     </table>
+    <br>
+    <a href="resume?uuid=<%=UUID.randomUUID().toString()%>&action=save"><img src="img/add.png"></a>
+    <br>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

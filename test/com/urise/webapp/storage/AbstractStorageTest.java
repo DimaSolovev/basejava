@@ -22,23 +22,6 @@ public abstract class AbstractStorageTest {
 
     protected Storage storage;
 
-//    private static final String UUID_1 = UUID.randomUUID().toString();
-//    private static final String UUID_2 = UUID.randomUUID().toString();
-//    private static final String UUID_3 = UUID.randomUUID().toString();
-//    private static final String UUID_4 = UUID.randomUUID().toString();
-//
-//    private static final Resume R1;
-//    private static final Resume R2;
-//    private static final Resume R3;
-//    private static final Resume R4;
-//
-//    static {
-//        R1 = ResumeTestData.createResume(UUID_1, "Name1");
-//        R2 = ResumeTestData.createResume(UUID_2, "Name2");
-//        R3 = ResumeTestData.createResume(UUID_3, "Name3");
-//        R4 = ResumeTestData.createResume(UUID_4, "Name4");
-//    }
-
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
