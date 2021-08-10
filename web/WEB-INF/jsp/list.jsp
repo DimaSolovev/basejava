@@ -30,7 +30,7 @@
         </c:forEach>
     </table>
     <br>
-    <a href="resume?uuid=<%=UUID.randomUUID().toString()%>&action=save"><img src="img/add.png"></a>
+    <a href="resume?action=save"><img src="img/add.png"></a>
     <br>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

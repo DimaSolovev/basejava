@@ -28,7 +28,17 @@ public class ResumeServlet extends HttpServlet {
         String fullName = request.getParameter("fullName");
         Resume r;
         if (uuid == null && uuid.equals("")) {
-
+            r = new Resume(fullName);
+            for (ContactType type : ContactType.values()) {
+                String value = request.getParameter(type.name());
+                if (value != null && value.trim().length() != 0) {
+                    r.addContact(type, value);
+                } else {
+                    r.getContacts().remove(type);
+                }
+            }
+            storage.update(r);
+            response.sendRedirect("resume");
         }
         r = storage.get(uuid);
         r.setFullName(fullName);
@@ -59,6 +69,10 @@ public class ResumeServlet extends HttpServlet {
                 storage.delete(uuid);
                 response.sendRedirect("resume");
                 return;
+            case "save":
+                r = new Resume("");
+                storage.save(r);
+                break;
             case "view":
             case "edit":
                 r = storage.get(uuid);
