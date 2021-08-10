@@ -26,10 +26,10 @@
             </dl>
         </c:forEach>
         <h3>Секции:</h3>
-        <c:forEach var="type" items="<%=SectionType.values()%>">
+        <c:forEach var="typeSection" items="<%=SectionType.values()%>">
             <dl>
-                <dt>${type.title}</dt>
-                <dd><input type="text" name="${type.name()}" size=30 value="${resume.getSection(type)}"></dd>
+                <dt>${typeSection.title}</dt>
+                <dd><input type="text" name="${typeSection.name()}" size=30 value="${resume.getSection(typeSection)}"></dd>
             </dl>
         </c:forEach>
         <hr>
