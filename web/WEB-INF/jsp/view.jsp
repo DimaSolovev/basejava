@@ -23,7 +23,7 @@
         <c:forEach var="sectionEntry" items="${resume.sections}">
             <jsp:useBean id="sectionEntry"
                          type="java.util.Map.Entry<com.urise.webapp.model.SectionType, com.urise.webapp.model.Section>"/>
-                <%=sectionEntry.getKey().getTitle()+" "+sectionEntry.getValue()%><br/>
+                <%=sectionEntry.getKey().getTitle()+": "+sectionEntry.getValue()%><br/>
         </c:forEach>
     <p>
 </section>
