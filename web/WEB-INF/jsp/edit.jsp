@@ -29,7 +29,7 @@
         <c:forEach var="typeSection" items="<%=SectionType.values()%>">
             <dl>
                 <dt>${typeSection.title}</dt>
-                <dd><input type="text" name="${typeSection.name()}" size=30 value="${resume.getSection(typeSection)}"></dd>
+                <dd><input type="text" name="${typeSection.name()}" size=100 value="${resume.getSection(typeSection)}"></dd>
             </dl>
         </c:forEach>
         <hr>

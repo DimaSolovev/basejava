@@ -1,8 +1,7 @@
 package com.urise.webapp.web;
 
 import com.urise.webapp.Config;
-import com.urise.webapp.model.ContactType;
-import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.*;
 import com.urise.webapp.storage.Storage;
 
 import javax.servlet.ServletConfig;
@@ -26,21 +25,21 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume r;
-        if (uuid == null && uuid.equals("")) {
-            r = new Resume(fullName);
-            for (ContactType type : ContactType.values()) {
-                String value = request.getParameter(type.name());
-                if (value != null && value.trim().length() != 0) {
-                    r.addContact(type, value);
-                } else {
-                    r.getContacts().remove(type);
-                }
-            }
-            storage.update(r);
-            response.sendRedirect("resume");
-        }
-        r = storage.get(uuid);
+//        Resume r;
+//        if (uuid == null && uuid.equals("")) {
+//            r = new Resume(fullName);
+//            for (ContactType type : ContactType.values()) {
+//                String value = request.getParameter(type.name());
+//                if (value != null && value.trim().length() != 0) {
+//                    r.addContact(type, value);
+//                } else {
+//                    r.getContacts().remove(type);
+//                }
+//            }
+//            storage.update(r);
+//            response.sendRedirect("resume");
+//        }
+        Resume r = storage.get(uuid);
         r.setFullName(fullName);
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
@@ -48,6 +47,19 @@ public class ResumeServlet extends HttpServlet {
                 r.addContact(type, value);
             } else {
                 r.getContacts().remove(type);
+            }
+        }
+        for (SectionType type : SectionType.values()) {
+            String value = request.getParameter(type.name());
+            switch (type) {
+                case OBJECTIVE:
+                case PERSONAL:
+                    r.getSections().put(type, new TextSection(value));
+                    break;
+                case ACHIEVEMENT:
+                case QUALIFICATIONS:
+                    r.getSections().put(type, new ListSection(value.split("\\n")));
+                    break;
             }
         }
         storage.update(r);
@@ -62,7 +74,6 @@ public class ResumeServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
             return;
         }
-
         Resume r;
         switch (action) {
             case "delete":
