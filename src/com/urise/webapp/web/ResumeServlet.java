@@ -53,6 +53,7 @@ public class ResumeServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
         if (action == null) {
