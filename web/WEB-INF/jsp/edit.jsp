@@ -16,7 +16,7 @@
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
             <dt>Имя:</dt>
-            <dd><input type="text" required pattern="^\S" title="Введите ваше имя без пробелов вначале" name="fullName" size=50 value="${resume.fullName}"></dd>
+            <dd><input type="text" required pattern="\S" title="Введите ваше имя без пробелов вначале" name="fullName" size=50 value="${resume.fullName}"></dd>
         </dl>
         <h3>Контакты:</h3>
         <c:forEach var="type" items="<%=ContactType.values()%>">
@@ -29,7 +29,8 @@
         <c:forEach var="typeSection" items="<%=SectionType.values()%>">
             <dl>
                 <dt>${typeSection.title}</dt>
-                <dd><input type="text" name="${typeSection.name()}" size=100 value="${resume.getSection(typeSection)}"></dd>
+               <!-- <dd><input type="text" name="${typeSection.name()}" size=100 value="${resume.getSection(typeSection)}"></dd>-->
+                <dd><textarea name="${typeSection.name()}"  value="${resume.getSection(typeSection)} "></textarea></dd>
             </dl>
         </c:forEach>
         <hr>
