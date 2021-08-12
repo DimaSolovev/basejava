@@ -29,7 +29,6 @@
         <c:forEach var="typeSection" items="<%=SectionType.values()%>">
             <dl>
                 <dt>${typeSection.title}</dt>
-               <!-- <dd><input type="text" name="${typeSection.name()}" size=100 value="${resume.getSection(typeSection)}"></dd>-->
                 <dd><textarea name="${typeSection.name()}">${resume.getSection(typeSection)}</textarea></dd>
             </dl>
         </c:forEach>
