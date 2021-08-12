@@ -62,6 +62,7 @@ public class ResumeServlet extends HttpServlet {
                     break;
             }
         }
+
         storage.update(r);
         response.sendRedirect("resume");
     }
