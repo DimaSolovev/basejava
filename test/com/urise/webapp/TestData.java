@@ -28,9 +28,6 @@ public class TestData {
         R1.addContact(ContactType.MAIL, "soloveid@mail.ru");
         R1.addContact(ContactType.PHONE, "914-345-67-89");
 
-        R4.addContact(ContactType.PHONE, "914-243-44-55");
-        R4.addContact(ContactType.SKYPE, "skype");
-
         R1.addSection(SectionType.OBJECTIVE, new TextSection("Программист"));
         R1.addSection(SectionType.PERSONAL, new TextSection("Ответственный"));
         R1.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижение1", "Достижение2", "Достижение3"));
@@ -53,5 +50,8 @@ public class TestData {
 
         R2.addContact(ContactType.SKYPE, "skype2");
         R2.addContact(ContactType.PHONE, "914-233-54-45");
+
+        R4.addContact(ContactType.PHONE, "914-243-44-55");
+        R4.addContact(ContactType.SKYPE, "skype");
     }
 }
