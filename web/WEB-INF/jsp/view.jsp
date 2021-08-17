@@ -42,7 +42,7 @@
                 <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
                     <td>
                         <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
-                            ${item }
+                            ${item}<br>
                         </c:forEach>
                     </td>
                 </c:when>
