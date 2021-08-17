@@ -16,11 +16,11 @@
 <jsp:include page="fragments/header.jsp"/>
 <section>
     <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
+
         <input type="hidden" name="uuid" value="${resume.uuid}">
-        <dl>
-            <dt>Имя:</dt>
-            <dd><input type="text" required  pattern="^[\S]+" title="Введите ваше имя без пробелов вначале" name="fullName" size=50 value="${resume.fullName}"></dd>
-        </dl>
+        <h1>Имя:</h1>
+        <dl><input type="text" required pattern="^[\S]+" title="Введите ваше имя без пробелов вначале" name="fullName"
+                   size=50 value="${resume.fullName}"></dl>
 
         <h3>Контакты:</h3>
 
@@ -30,6 +30,7 @@
                 <dd><input type="text" name="${type.name()}" size=30 value="${resume.getContact(type)}"></dd>
             </dl>
         </c:forEach>
+        <hr>
 
         <h3>Секции:</h3>
 

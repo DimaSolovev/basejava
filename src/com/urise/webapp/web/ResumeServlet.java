@@ -81,7 +81,6 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "save":
-                //r = new Resume("");
                 r=Resume.EMPTY;
                 break;
             case "view":
