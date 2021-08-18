@@ -35,38 +35,40 @@
 
         <c:forEach var="type" items="<%=SectionType.values()%>">
 
-            <c:if test="${resume.getSection(type)!=null}">
-
-                <c:set var="section" value="${resume.getSection(type)}"/>
-                <jsp:useBean id="section" type="com.urise.webapp.model.Section"/>
-                <h2><a>${type.title}</a></h2>
-
-                <c:choose>
-
-                    <c:when test="${type=='OBJECTIVE'||type=='PERSONAL'}">
-                        <input type='text' name='${type}' size=75 value='<%=section%>'>
-                    </c:when>
-                    <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
-                    <textarea name='${type}' cols=75
-                              rows=5><%=String.join("\n", ((ListSection) section).getItems())%></textarea>
-                    </c:when>
-
-                </c:choose>
-            </c:if>
-
-            <h2><a>${type.title}</a></h2>
             <c:choose>
-                <c:when test="${type=='OBJECTIVE'||type=='PERSONAL'}">
-                    <input type='text' name='${type}' size=75 value=''>
-                </c:when>
-                <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
+                <c:when test="${resume.getSection(type)==null}">
+                    <h2><a>${type.title}</a></h2>
+                    <c:choose>
+                        <c:when test="${type=='OBJECTIVE'||type=='PERSONAL'}">
+                            <input type='text' name='${type}' size=75>
+                        </c:when>
+                        <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
                     <textarea name='${type}' cols=75
                               rows=5></textarea>
+                        </c:when>
+                    </c:choose>
                 </c:when>
 
+                <c:when test="${resume.getSection(type)!=null}">
+
+                    <c:set var="section" value="${resume.getSection(type)}"/>
+                    <jsp:useBean id="section" type="com.urise.webapp.model.Section"/>
+                    <h2><a>${type.title}</a></h2>
+
+                    <c:choose>
+                        <c:when test="${type=='OBJECTIVE'||type=='PERSONAL'}">
+                            <input type='text' name='${type}' size=75 value='<%=section%>'>
+                        </c:when>
+                        <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
+                    <textarea name='${type}' cols=75
+                              rows=5><%=String.join("\n", ((ListSection) section).getItems())%></textarea>
+                        </c:when>
+                    </c:choose>
+                </c:when>
             </c:choose>
 
         </c:forEach>
+
         <hr>
         <button type="submit">Сохранить</button>
         <button onclick="window.history.back()">Отменить</button>
