@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
 
@@ -53,7 +55,16 @@ public class ResumeServlet extends HttpServlet {
                     break;
                 case ACHIEVEMENT:
                 case QUALIFICATIONS:
-                    r.getSections().put(type, new ListSection(value.split("\\n")));
+                    String [] strings = value.split("\\n");
+                    List<String> list = new ArrayList<>();
+                    for (int i = 0; i < strings.length ; i++) {
+                        if(!strings[i].isBlank()){
+                            System.out.println(strings[i]);
+                            list.add(strings[i]);
+                        }
+                    }
+                   // r.getSections().put(type, new ListSection(value.split("\\n")));
+                    r.getSections().put(type, new ListSection(list));
                     break;
             }
         }
