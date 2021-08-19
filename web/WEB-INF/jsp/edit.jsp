@@ -19,7 +19,7 @@
 
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <h1>Имя:</h1>
-        <dl><input type="text" required pattern="^\S+\s?\S?" title="Введите ваше имя без пробелов вначале" name="fullName"
+        <dl><input type="text" required pattern="^\S+\s?\S*" title="Введите ваше имя без пробелов вначале" name="fullName"
                    size=50 value="${resume.fullName}"></dl>
 
         <h3>Контакты:</h3>
