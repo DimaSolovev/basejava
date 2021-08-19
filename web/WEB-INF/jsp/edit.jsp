@@ -66,7 +66,6 @@
                     </c:choose>
                 </c:when>
             </c:choose>
-
         </c:forEach>
 
         <hr>

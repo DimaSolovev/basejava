@@ -22,7 +22,7 @@
         </c:forEach>
     <p>
 
-    <table>
+    <table border="1">
         <c:forEach var="sectionEntry" items="${resume.sections}">
             <jsp:useBean id="sectionEntry"
                          type="java.util.Map.Entry<com.urise.webapp.model.SectionType, com.urise.webapp.model.Section>"/>
@@ -31,24 +31,22 @@
             <jsp:useBean id="section" type="com.urise.webapp.model.Section"/>
             <tr>
                 <td><a name="type.name">${type.title}: </a></td>
-                <td>
+
                     <c:choose>
-                    <c:when test="${type=='OBJECTIVE' || type=='PERSONAL'}">
-                <td colspan="2">
-                    <%=((TextSection) section).getContent()%>
-                </td>
-                </c:when>
+                        <c:when test="${type=='OBJECTIVE' || type=='PERSONAL'}">
+                            <td >
+                                <%=((TextSection) section).getContent()%>
+                            </td>
+                        </c:when>
 
-                <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
-                    <td>
-                        <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
-                            ${item}<br>
-                        </c:forEach>
-                    </td>
-                </c:when>
-
+                        <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
+                            <td>
+                                <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
+                                    ${item}<br>
+                                </c:forEach>
+                            </td>
+                        </c:when>
                 </c:choose>
-                </td>
             </tr>
         </c:forEach>
     </table>
