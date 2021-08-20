@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,12 +60,22 @@ public class ResumeServlet extends HttpServlet {
                     List<String> list = new ArrayList<>();
                     for (int i = 0; i < strings.length ; i++) {
                         if(!strings[i].isBlank()){
-                            System.out.println(strings[i]);
                             list.add(strings[i]);
                         }
                     }
-                   // r.getSections().put(type, new ListSection(value.split("\\n")));
                     r.getSections().put(type, new ListSection(list));
+                    break;
+                case EDUCATION:
+                case EXPERIENCE:
+
+                    String nameOrg = request.getParameter("name");
+                    String url = request.getParameter("url");
+                    LocalDate start = LocalDate.parse(request.getParameter("startDate"));
+                    LocalDate end = LocalDate.parse(request.getParameter("endDate"));
+                    String title = request.getParameter("title");
+                    String description = request.getParameter("description");
+                    Organization organization = new Organization(nameOrg,url,new Organization.Position(start,end,title,description));
+                    r.getSections().put(type,new OrganizationSection(organization));
                     break;
             }
         }

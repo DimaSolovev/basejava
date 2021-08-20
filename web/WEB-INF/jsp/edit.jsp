@@ -19,7 +19,8 @@
 
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <h1>Имя:</h1>
-        <dl><input type="text" required pattern="^\S+\s?\S*" title="Введите ваше имя без пробелов вначале" name="fullName"
+        <dl><input type="text" required pattern="^\S+\s?\S*" title="Введите ваше имя без пробелов вначале"
+                   name="fullName"
                    size=50 value="${resume.fullName}"></dl>
 
         <h3>Контакты:</h3>
@@ -39,13 +40,51 @@
                 <c:when test="${resume.getSection(type)==null}">
                     <h2><a>${type.title}</a></h2>
                     <c:choose>
+
                         <c:when test="${type=='OBJECTIVE'||type=='PERSONAL'}">
                             <input type='text' name='${type}' size=75>
                         </c:when>
+
                         <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
                     <textarea name='${type}' cols=75
                               rows=5></textarea>
                         </c:when>
+
+                        <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
+
+                            <dl>
+                                <dt>Название учереждения:</dt>
+                                <dd><input type="text" name='name' size=100></dd>
+                            </dl>
+                            <dl>
+                                <dt>Сайт учереждения:</dt>
+                                <dd><input type="text" name='url' size=100></dd>
+                                </dd>
+                            </dl>
+                            <br>
+                            <dl>
+                                <dt>Начальная дата:</dt>
+                                <dd>
+                                    <input type="date" name="startDate">
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>Конечная дата:</dt>
+                                <dd>
+                                    <input type="date" name="endDate">
+                            </dl>
+                            <dl>
+                                <dt>Должность:</dt>
+                                <dd><input type="text" name='title' size=75
+                                >
+                            </dl>
+                            <dl>
+                                <dt>Описание:</dt>
+                                <dd><textarea name="description" rows=5
+                                              cols=75></textarea></dd>
+                            </dl>
+                        </c:when>
+
                     </c:choose>
                 </c:when>
 
@@ -56,13 +95,59 @@
                     <h2><a>${type.title}</a></h2>
 
                     <c:choose>
+
                         <c:when test="${type=='OBJECTIVE'||type=='PERSONAL'}">
                             <input type='text' name='${type}' size=75 value='<%=section%>'>
                         </c:when>
+
                         <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
                     <textarea name='${type}' cols=75
                               rows=5><%=String.join("\n", ((ListSection) section).getItems())%></textarea>
                         </c:when>
+
+                        <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
+                            <c:forEach var="org" items="<%=((OrganizationSection) section).getOrganizations()%>">
+                                <dl>
+                                    <dt>Название учереждения:</dt>
+                                    <dd><input type="text" name='name' size=100 value="${org.homePage.name}"></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Сайт учереждения:</dt>
+                                    <dd><input type="text" name='url' size=100 value="${org.homePage.url}"></dd>
+                                    </dd>
+                                </dl>
+                                <br>
+                                    <c:forEach var="pos" items="${org.positions}">
+                                        <jsp:useBean id="pos" type="com.urise.webapp.model.Organization.Position"/>
+                                        <dl>
+                                            <dt>Начальная дата:</dt>
+                                            <dd>
+                                                <input type="date" name="startDate"
+                                                       value="<%=pos.getStartDate()%>" >
+                                            </dd>
+                                        </dl>
+                                        <dl>
+                                            <dt>Конечная дата:</dt>
+                                            <dd>
+                                                <input type="date" name="endDate"
+                                                       value="<%=pos.getEndDate()%>" >
+                                        </dl>
+                                        <dl>
+                                            <dt>Должность:</dt>
+                                            <dd><input type="text" name='title' size=75
+                                                       value="${pos.title}">
+                                        </dl>
+                                        <dl>
+                                            <dt>Описание:</dt>
+                                            <dd><textarea name="description" rows=5
+                                                          cols=75>${pos.description}</textarea></dd>
+                                        </dl>
+                                    </c:forEach>
+
+
+                            </c:forEach>
+                        </c:when>
+
                     </c:choose>
                 </c:when>
             </c:choose>

@@ -46,6 +46,23 @@
                                 </c:forEach>
                             </td>
                         </c:when>
+
+                        <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
+                            <c:forEach var="orgs" items="<%=((OrganizationSection) section).getOrganizations()%>">
+                                   <tr>
+                                       <td>
+                                           ${orgs.homePage}
+                                       </td>
+                                   </tr>
+                                    <c:forEach var="position" items="${orgs.positions}">
+                                        <tr>
+                                            <td>${position.startDate} ${position.endDate}</td>
+                                            <td>${position.title} ${position.description}</td>
+                                        </tr>
+                                    </c:forEach>
+                            </c:forEach>
+                        </c:when>
+
                 </c:choose>
             </tr>
         </c:forEach>
