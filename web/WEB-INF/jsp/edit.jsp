@@ -54,7 +54,7 @@
 
                             <dl>
                                 <dt>Название учереждения:</dt>
-                                <dd><input type="text" name='name' size=100></dd>
+                                <dd><input type="text" name='${type}' size=100></dd>
                             </dl>
                             <dl>
                                 <dt>Сайт учереждения:</dt>

@@ -22,7 +22,7 @@
         </c:forEach>
     <p>
 
-    <table >
+    <table border="1">
         <c:forEach var="sectionEntry" items="${resume.sections}">
             <jsp:useBean id="sectionEntry"
                          type="java.util.Map.Entry<com.urise.webapp.model.SectionType, com.urise.webapp.model.Section>"/>
@@ -32,36 +32,49 @@
             <tr>
                 <td valign="top"><a name="type.name">${type.title}: </a></td>
 
-                    <c:choose>
-                        <c:when test="${type=='OBJECTIVE' || type=='PERSONAL'}">
-                            <td>
-                                <%=((TextSection) section).getContent()%>
-                            </td>
-                        </c:when>
+                <c:choose>
+                    <c:when test="${type=='OBJECTIVE' || type=='PERSONAL'}">
+                        <td>
+                            <%=((TextSection) section).getContent()%>
+                        </td>
+                    </c:when>
 
-                        <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
+                    <c:when test="${type=='QUALIFICATIONS' || type=='ACHIEVEMENT'}">
+                        <td>
+                            <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
+                                ${item}<br>
+                            </c:forEach>
+                        </td>
+                    </c:when>
+
+                    <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
+                        <c:forEach var="orgs" items="<%=((OrganizationSection) section).getOrganizations()%>">
                             <td>
-                                <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
-                                    ${item}<br>
+                                <dl>
+                                    <dt>Организация:</dt>
+                                    <dd>${orgs.homePage.name}</dd>
+                                </dl>
+                                <dl>
+                                    <dt>Сайт:</dt>
+                                    <dd>${orgs.homePage.url}</dd>
+                                </dl>
+                                <c:forEach var="pos" items="${orgs.positions}">
+                                    <dl>
+                                        <dt>Период работы:</dt>
+                                        <dd>${pos.startDate} - ${pos.endDate}</dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Должность:</dt>
+                                        <dd>${pos.title} </dd>
+                                    </dl>
+                                    <dl>
+                                        <dt>Описание:</dt>
+                                        <dd>${pos.description}</dd>
+                                    </dl>
                                 </c:forEach>
                             </td>
-                        </c:when>
-
-                        <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
-                            <c:forEach var="orgs" items="<%=((OrganizationSection) section).getOrganizations()%>">
-                                   <tr>
-                                       <td>
-                                           ${orgs.homePage}
-                                       </td>
-                                   </tr>
-                                    <c:forEach var="position" items="${orgs.positions}">
-                                        <tr>
-                                            <td>${position.startDate} ${position.endDate}</td>
-                                            <td>${position.title} ${position.description}</td>
-                                        </tr>
-                                    </c:forEach>
-                            </c:forEach>
-                        </c:when>
+                        </c:forEach>
+                    </c:when>
 
                 </c:choose>
             </tr>

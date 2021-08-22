@@ -69,6 +69,7 @@ public class ResumeServlet extends HttpServlet {
                 case EXPERIENCE:
 
                     String nameOrg = request.getParameter("name");
+                    System.out.println(nameOrg);
                     String url = request.getParameter("url");
                     LocalDate start = LocalDate.parse(request.getParameter("startDate"));
                     LocalDate end = LocalDate.parse(request.getParameter("endDate"));
